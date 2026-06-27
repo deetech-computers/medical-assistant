@@ -4,6 +4,7 @@ from flask import Blueprint, current_app, session
 
 from routes.auth_routes import current_user
 from services.activity_service import activity_summary, list_recent_activities, record_activity
+from services.admin_analytics_service import build_admin_api_payload
 from services.auth_service import authenticate_user, create_user, list_users
 from services.diagnosis_service import list_recent_diagnoses, list_user_diagnoses, save_diagnosis
 from services.prediction_service import create_prediction
@@ -224,6 +225,12 @@ def api_history():
 @api_admin_required
 def api_admin_summary():
     return success_response({"summary": activity_summary()})
+
+
+@api_routes.route("/admin/analytics")
+@api_admin_required
+def api_admin_analytics():
+    return success_response({"analytics": build_admin_api_payload()})
 
 
 @api_routes.route("/admin/users")

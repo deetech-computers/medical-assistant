@@ -46,3 +46,15 @@ def summary():
                 select(func.count(Diagnosis.id)).where(Diagnosis.user_id.is_(None))
             ),
         }
+
+
+def event_counts(limit=8):
+    with database_session() as session:
+        rows = session.execute(
+            select(Activity.event_type, func.count(Activity.id).label("total"))
+            .group_by(Activity.event_type)
+            .order_by(func.count(Activity.id).desc())
+            .limit(limit)
+        ).all()
+
+        return [{"label": row.event_type, "value": row.total} for row in rows]

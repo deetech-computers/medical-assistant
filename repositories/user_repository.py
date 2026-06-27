@@ -56,3 +56,14 @@ def list_all_with_diagnosis_count():
             }
             for row in rows
         ]
+
+
+def role_counts():
+    with database_session() as session:
+        rows = session.execute(
+            select(User.role, func.count(User.id).label("total"))
+            .group_by(User.role)
+            .order_by(func.count(User.id).desc())
+        ).all()
+
+        return [{"label": row.role, "value": row.total} for row in rows]

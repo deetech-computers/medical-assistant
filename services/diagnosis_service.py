@@ -22,6 +22,10 @@ def list_user_diagnoses(user_id):
 
 def list_recent_diagnoses(limit=40):
     rows = diagnosis_repository.list_recent(limit)
+    return format_diagnosis_rows(rows)
+
+
+def format_diagnosis_rows(rows):
     return [_format_diagnosis(row) for row in rows]
 
 

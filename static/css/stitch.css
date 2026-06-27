@@ -884,6 +884,115 @@ button[data-loading="true"] {
     color: var(--primary);
 }
 
+.analytics-stat-card span,
+.report-kpi span {
+    color: var(--on-surface-variant);
+}
+
+.report-kpi strong {
+    display: block;
+    color: var(--primary);
+    font-size: 26px;
+    line-height: 34px;
+    margin: 6px 0;
+    overflow-wrap: anywhere;
+}
+
+.chart-frame {
+    position: relative;
+    height: 320px;
+    width: 100%;
+}
+
+.chart-frame-compact {
+    height: 300px;
+}
+
+.chart-frame-small {
+    height: 240px;
+}
+
+.analytics-filter-form {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
+    align-items: end;
+}
+
+.analytics-filter-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.analytics-filter-form span {
+    color: var(--on-surface-variant);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.analytics-filter-form input,
+.analytics-filter-form select {
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid var(--outline-variant);
+    border-radius: 12px;
+    padding: 0 12px;
+}
+
+.analytics-filter-form button {
+    min-height: 44px;
+    border: 0;
+}
+
+.analytics-bar-row > div:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.analytics-bar-row span {
+    color: var(--on-surface-variant);
+}
+
+.analytics-bar-row strong {
+    color: var(--primary);
+}
+
+.analytics-table th,
+.analytics-table td {
+    padding-right: 12px;
+}
+
+.pagination-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 18px;
+    border-top: 1px solid var(--outline-variant);
+    padding-top: 16px;
+}
+
+.pagination-row a,
+.pagination-row span,
+.pagination-row strong {
+    border: 1px solid var(--outline-variant);
+    border-radius: 12px;
+    padding: 10px 14px;
+    color: var(--on-surface-variant);
+}
+
+.pagination-row a {
+    color: var(--primary);
+    font-weight: 800;
+    background: var(--surface-container-low);
+}
+
 input,
 select,
 textarea {
@@ -1231,7 +1340,8 @@ main > header:has(+ form#diagnosis) {
 
     .report-metrics,
     .report-section-grid,
-    .history-card-grid {
+    .history-card-grid,
+    .analytics-filter-form {
         grid-template-columns: 1fr;
     }
 }
@@ -1322,6 +1432,23 @@ main > header:has(+ form#diagnosis) {
 
     .app-topbar input {
         min-height: 40px;
+    }
+
+    .chart-frame,
+    .chart-frame-compact,
+    .chart-frame-small {
+        height: 240px;
+    }
+
+    .pagination-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pagination-row a,
+    .pagination-row span,
+    .pagination-row strong {
+        text-align: center;
     }
 
     .p-xl {

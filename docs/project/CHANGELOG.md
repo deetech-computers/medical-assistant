@@ -6,6 +6,13 @@ All notable project changes are documented here.
 
 ### Added
 
+- Added admin analytics service for dashboard reports, chart data, filtered records, pagination, and CSV export.
+- Added Chart.js dashboard charts for daily predictions, disease analytics, weekly reports, and monthly reports.
+- Added admin symptom analytics and report summary cards.
+- Added diagnosis search, disease filter, record type filter, date range filters, and page-size control on the admin dashboard.
+- Added `/admin/export/diagnoses` CSV export for filtered diagnosis reports.
+- Added `/api/v1/admin/analytics` for reusable admin analytics data.
+- Added Phase 6 admin analytics summary documentation.
 - Added prediction report insights with confidence level, risk score, severity, probability rows, recommendations, care notes, and safety messaging.
 - Added richer result report layout with PDF export support through the browser print flow.
 - Added saved-record insight summaries for user history.

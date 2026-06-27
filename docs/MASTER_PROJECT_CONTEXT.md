@@ -10,9 +10,9 @@ The project is an academic healthcare web application that predicts possible dis
 
 ## Current Phase
 
-Phase 5: Prediction Experience is complete.
+Phase 6: Admin Analytics is complete.
 
-The next planned phase is Phase 6: Admin Analytics. That phase should improve admin reporting, charts, filters, and exports.
+The next planned phase is Phase 7: Production Deployment. That phase should prepare Render, Vercel, Docker, and deployment documentation.
 
 ## Non-Negotiable Rules
 
@@ -49,6 +49,7 @@ result page
 ```text
 /admin/
 /admin/users
+/admin/export/diagnoses
 ```
 
 ## Current Technical Stack

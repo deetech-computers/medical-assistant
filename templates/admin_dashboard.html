@@ -3,6 +3,7 @@
 <head>
     {% include "_stitch_head.html" %}
     <title>Dashboard | Project Activity</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js" defer></script>
 </head>
 <body class="font-body-md text-on-surface">
     {% set active_page = 'admin' %}
@@ -15,42 +16,186 @@
                 <div class="h-6 w-[1px] bg-outline-variant mx-md"></div>
                 <a class="text-on-surface-variant hover:text-primary" href="{{ url_for('admin_routes.users') }}">Users</a>
             </div>
-            <span class="material-symbols-outlined text-on-surface-variant" data-icon="settings" aria-hidden="true"></span>
+            <a class="bg-primary text-on-primary py-sm px-md rounded-lg font-semibold flex items-center gap-xs" href="{{ url_for('admin_routes.export_diagnoses', search=filters.search, disease=filters.disease, account_mode=filters.account_mode, start_date=filters.start_date, end_date=filters.end_date) }}">
+                <span class="material-symbols-outlined text-[18px]" data-icon="download" aria-hidden="true"></span>
+                Export CSV
+            </a>
         </header>
 
-        <div class="p-xl space-y-xl">
+        <div class="p-xl space-y-xl admin-analytics-page">
             <section class="grid grid-cols-12 gap-md">
-                <div class="col-span-12 md:col-span-3 bg-surface-container-lowest border border-outline-variant p-lg rounded-xl tonal-card-shadow">
+                <div class="col-span-12 md:col-span-3 analytics-stat-card bg-surface-container-lowest border border-outline-variant p-lg rounded-xl tonal-card-shadow">
                     <p class="font-label-md text-label-md text-on-surface-variant uppercase">Users</p>
                     <h2 class="font-display-lg text-display-lg text-primary">{{ summary.user_count }}</h2>
+                    <span>Registered accounts</span>
                 </div>
-                <div class="col-span-12 md:col-span-3 bg-surface-container-lowest border border-outline-variant p-lg rounded-xl tonal-card-shadow">
+                <div class="col-span-12 md:col-span-3 analytics-stat-card bg-surface-container-lowest border border-outline-variant p-lg rounded-xl tonal-card-shadow">
                     <p class="font-label-md text-label-md text-on-surface-variant uppercase">Diagnoses</p>
                     <h2 class="font-display-lg text-display-lg text-primary">{{ summary.diagnosis_count }}</h2>
+                    <span>Total prediction records</span>
                 </div>
-                <div class="col-span-12 md:col-span-3 bg-surface-container-lowest border border-outline-variant p-lg rounded-xl tonal-card-shadow">
+                <div class="col-span-12 md:col-span-3 analytics-stat-card bg-surface-container-lowest border border-outline-variant p-lg rounded-xl tonal-card-shadow">
                     <p class="font-label-md text-label-md text-on-surface-variant uppercase">Guest Diagnoses</p>
                     <h2 class="font-display-lg text-display-lg text-primary">{{ summary.guest_diagnosis_count }}</h2>
+                    <span>Temporary records</span>
                 </div>
-                <div class="col-span-12 md:col-span-3 bg-surface-container-lowest border border-outline-variant p-lg rounded-xl tonal-card-shadow">
+                <div class="col-span-12 md:col-span-3 analytics-stat-card bg-surface-container-lowest border border-outline-variant p-lg rounded-xl tonal-card-shadow">
                     <p class="font-label-md text-label-md text-on-surface-variant uppercase">Activities</p>
                     <h2 class="font-display-lg text-display-lg text-primary">{{ summary.activity_count }}</h2>
+                    <span>Tracked events</span>
                 </div>
+            </section>
+
+            <section class="grid grid-cols-12 gap-md">
+                {% for report in reports %}
+                    <article class="col-span-12 md:col-span-3 bg-surface-container-lowest border border-outline-variant p-lg rounded-xl tonal-card-shadow report-kpi">
+                        <p class="font-label-md text-label-md text-on-surface-variant uppercase">{{ report.label }}</p>
+                        <strong>{{ report.value }}</strong>
+                        <span>{{ report.detail }}</span>
+                    </article>
+                {% endfor %}
             </section>
 
             <section class="grid grid-cols-12 gap-md">
                 <article class="col-span-12 lg:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
                     <div class="flex items-center justify-between mb-lg">
-                        <h2 class="font-headline-md text-headline-md text-primary">Recent diagnoses</h2>
-                        <span class="material-symbols-outlined text-outline" data-icon="analytics" aria-hidden="true"></span>
+                        <div>
+                            <p class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs">Prediction trend</p>
+                            <h2 class="font-headline-md text-headline-md text-primary">Daily predictions</h2>
+                        </div>
+                        <span class="material-symbols-outlined text-outline" data-icon="show_chart" aria-hidden="true"></span>
+                    </div>
+                    <div class="chart-frame">
+                        <canvas id="dailyPredictionChart" aria-label="Daily predictions chart"></canvas>
+                    </div>
+                </article>
+
+                <article class="col-span-12 lg:col-span-5 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
+                    <div class="flex items-center justify-between mb-lg">
+                        <div>
+                            <p class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs">Disease analytics</p>
+                            <h2 class="font-headline-md text-headline-md text-primary">Top conditions</h2>
+                        </div>
+                        <span class="material-symbols-outlined text-outline" data-icon="donut_large" aria-hidden="true"></span>
+                    </div>
+                    <div class="chart-frame chart-frame-compact">
+                        <canvas id="diseaseChart" aria-label="Disease analytics chart"></canvas>
+                    </div>
+                </article>
+            </section>
+
+            <section class="grid grid-cols-12 gap-md">
+                <article class="col-span-12 md:col-span-6 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
+                    <div class="flex items-center justify-between mb-lg">
+                        <h2 class="font-headline-sm text-headline-sm text-primary">Weekly report</h2>
+                        <span class="material-symbols-outlined text-outline" data-icon="calendar_view_week" aria-hidden="true"></span>
+                    </div>
+                    <div class="chart-frame chart-frame-small">
+                        <canvas id="weeklyChart" aria-label="Weekly predictions chart"></canvas>
+                    </div>
+                </article>
+                <article class="col-span-12 md:col-span-6 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
+                    <div class="flex items-center justify-between mb-lg">
+                        <h2 class="font-headline-sm text-headline-sm text-primary">Monthly report</h2>
+                        <span class="material-symbols-outlined text-outline" data-icon="calendar_month" aria-hidden="true"></span>
+                    </div>
+                    <div class="chart-frame chart-frame-small">
+                        <canvas id="monthlyChart" aria-label="Monthly predictions chart"></canvas>
+                    </div>
+                </article>
+            </section>
+
+            <section class="grid grid-cols-12 gap-md">
+                <article class="col-span-12 lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
+                    <div class="flex items-center justify-between mb-lg">
+                        <h2 class="font-headline-sm text-headline-sm text-primary">Symptom analytics</h2>
+                        <span class="material-symbols-outlined text-outline" data-icon="list_alt" aria-hidden="true"></span>
+                    </div>
+                    <div class="space-y-sm">
+                        {% for symptom in symptom_analytics %}
+                            <div class="analytics-bar-row">
+                                <div>
+                                    <span>{{ symptom.label }}</span>
+                                    <strong>{{ symptom.value }}</strong>
+                                </div>
+                                <div class="meter-track">
+                                    <div class="meter-fill" style="width: {{ symptom.width }}%;"></div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <p class="text-on-surface-variant">No symptom data matches the current filter.</p>
+                        {% endfor %}
+                    </div>
+                </article>
+
+                <article class="col-span-12 lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
+                    <div class="flex items-center justify-between mb-lg">
+                        <div>
+                            <p class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs">Report filter</p>
+                            <h2 class="font-headline-sm text-headline-sm text-primary">Search diagnosis records</h2>
+                        </div>
+                        <a class="text-primary font-bold" href="{{ url_for('admin_routes.dashboard') }}">Reset</a>
+                    </div>
+                    <form class="analytics-filter-form" method="GET" action="{{ url_for('admin_routes.dashboard') }}">
+                        <label>
+                            <span>Search</span>
+                            <input name="search" type="search" value="{{ filters.search }}" placeholder="Disease, symptom, user">
+                        </label>
+                        <label>
+                            <span>Disease</span>
+                            <select name="disease">
+                                <option value="">All diseases</option>
+                                {% for disease in disease_options %}
+                                    <option value="{{ disease }}" {% if filters.disease == disease %}selected{% endif %}>{{ disease }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                        <label>
+                            <span>Record type</span>
+                            <select name="account_mode">
+                                <option value="">All records</option>
+                                <option value="saved" {% if filters.account_mode == 'saved' %}selected{% endif %}>Saved records</option>
+                                <option value="guest" {% if filters.account_mode == 'guest' %}selected{% endif %}>Guest records</option>
+                            </select>
+                        </label>
+                        <label>
+                            <span>From</span>
+                            <input name="start_date" type="date" value="{{ filters.start_date }}">
+                        </label>
+                        <label>
+                            <span>To</span>
+                            <input name="end_date" type="date" value="{{ filters.end_date }}">
+                        </label>
+                        <label>
+                            <span>Rows</span>
+                            <select name="per_page">
+                                {% for size in [5, 10, 15, 25] %}
+                                    <option value="{{ size }}" {% if pagination.per_page == size %}selected{% endif %}>{{ size }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                        <button class="bg-primary text-on-primary py-md px-xl rounded-lg font-bold" type="submit">Apply Filters</button>
+                    </form>
+                </article>
+            </section>
+
+            <section class="grid grid-cols-12 gap-md">
+                <article class="col-span-12 lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-md mb-lg">
+                        <div>
+                            <p class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs">Filtered records</p>
+                            <h2 class="font-headline-md text-headline-md text-primary">Diagnosis table</h2>
+                        </div>
+                        <span class="text-on-surface-variant">{{ pagination.total }} records</span>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full min-w-[720px] border-collapse">
+                        <table class="w-full min-w-[760px] border-collapse analytics-table">
                             <thead>
                                 <tr class="text-left text-label-md font-label-md text-on-surface-variant uppercase">
                                     <th class="py-sm border-b border-outline-variant">User</th>
                                     <th class="py-sm border-b border-outline-variant">Disease</th>
                                     <th class="py-sm border-b border-outline-variant">Match</th>
+                                    <th class="py-sm border-b border-outline-variant">Symptoms</th>
                                     <th class="py-sm border-b border-outline-variant">Date</th>
                                 </tr>
                             </thead>
@@ -60,15 +205,34 @@
                                         <td class="py-sm border-b border-surface-container">{{ diagnosis.name or 'Guest' }}</td>
                                         <td class="py-sm border-b border-surface-container font-semibold text-primary">{{ diagnosis.disease }}</td>
                                         <td class="py-sm border-b border-surface-container">{{ diagnosis.confidence or 0 }}%</td>
+                                        <td class="py-sm border-b border-surface-container text-on-surface-variant">{{ diagnosis.symptom_labels | join(', ') }}</td>
                                         <td class="py-sm border-b border-surface-container text-on-surface-variant">{{ diagnosis.created_at }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td class="py-md text-on-surface-variant" colspan="5">No records match the selected filters.</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
                     </div>
+
+                    <nav class="pagination-row">
+                        {% if pagination.has_previous %}
+                            <a href="{{ url_for('admin_routes.dashboard', search=filters.search, disease=filters.disease, account_mode=filters.account_mode, start_date=filters.start_date, end_date=filters.end_date, per_page=pagination.per_page, page=pagination.previous_page) }}">Previous</a>
+                        {% else %}
+                            <span>Previous</span>
+                        {% endif %}
+                        <strong>Page {{ pagination.page }} of {{ pagination.pages }}</strong>
+                        {% if pagination.has_next %}
+                            <a href="{{ url_for('admin_routes.dashboard', search=filters.search, disease=filters.disease, account_mode=filters.account_mode, start_date=filters.start_date, end_date=filters.end_date, per_page=pagination.per_page, page=pagination.next_page) }}">Next</a>
+                        {% else %}
+                            <span>Next</span>
+                        {% endif %}
+                    </nav>
                 </article>
 
-                <article class="col-span-12 lg:col-span-5 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
+                <article class="col-span-12 lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
                     <div class="flex items-center justify-between mb-lg">
                         <h2 class="font-headline-md text-headline-md text-primary">Recent activity</h2>
                         <span class="material-symbols-outlined text-outline" data-icon="monitoring" aria-hidden="true"></span>
@@ -78,7 +242,7 @@
                             <div class="p-md rounded-lg bg-surface-container-low border border-outline-variant" data-search-item>
                                 <p class="font-label-md text-label-md text-on-surface-variant uppercase">{{ activity.created_at }}</p>
                                 <p class="font-semibold text-primary">{{ activity.event_type }}</p>
-                                <p class="text-body-md text-on-surface-variant">{{ activity.name or 'Guest' }} · {{ activity.path or 'System' }}</p>
+                                <p class="text-body-md text-on-surface-variant">{{ activity.name or 'Guest' }} - {{ activity.path or 'System' }}</p>
                                 {% if activity.details %}
                                     <p class="text-body-md text-on-surface-variant">{{ activity.details }}</p>
                                 {% endif %}
@@ -89,5 +253,8 @@
             </section>
         </div>
     </main>
+
+    <script id="admin-chart-data" type="application/json">{{ chart_data_json | safe }}</script>
+    <script src="{{ url_for('static', filename='js/admin-analytics.js') }}"></script>
 </body>
 </html>

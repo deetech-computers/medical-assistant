@@ -16,6 +16,7 @@ The project is for academic prototype use and is not a replacement for professio
 - User registration and login
 - Saved diagnosis history for logged-in users
 - Admin dashboard for users, diagnoses, and activity logs
+- Admin analytics with charts, filters, pagination, and CSV export
 - Centralized configuration, logging, validation, and error handling
 - SQLite database for local development
 
@@ -125,6 +126,7 @@ Change this before any public deployment.
 | `/logout` | GET | Logout |
 | `/admin/` | GET | Admin dashboard |
 | `/admin/users` | GET | Admin user list |
+| `/admin/export/diagnoses` | GET | Admin CSV export |
 
 ## API Routes
 
@@ -147,6 +149,7 @@ Common endpoints:
 | `/api/v1/me` | GET | Current session |
 | `/api/v1/history` | GET | Logged-in user history |
 | `/api/v1/admin/summary` | GET | Admin summary |
+| `/api/v1/admin/analytics` | GET | Admin analytics |
 
 Full API notes are in:
 

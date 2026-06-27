@@ -64,6 +64,7 @@ Services contain application logic:
 - `services/activity_service.py`
 - `services/symptom_service.py`
 - `services/database_service.py`
+- `services/admin_analytics_service.py`
 
 ### Repositories
 
@@ -186,6 +187,16 @@ The application records:
 - prediction completion
 
 Successful GET page views are tracked by an `after_request` hook in `app.py`.
+
+## Admin Analytics Flow
+
+Admin analytics are prepared in:
+
+```text
+services/admin_analytics_service.py
+```
+
+The dashboard supports filtered diagnosis tables, pagination, disease analytics, symptom analytics, daily, weekly, and monthly report data, and CSV export. Chart data is rendered on the admin page through Chart.js while the core tables and metrics remain server-rendered.
 
 ## Error Handling
 

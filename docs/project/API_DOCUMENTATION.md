@@ -138,6 +138,10 @@ Admin endpoints require a logged-in admin account.
 
 Returns user, diagnosis, activity, and guest diagnosis counts.
 
+### GET `/api/v1/admin/analytics`
+
+Returns chart data and report summaries for the admin analytics dashboard.
+
 ### GET `/api/v1/admin/users`
 
 Returns registered users and diagnosis counts.
