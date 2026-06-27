@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, Response, request, send_from_directory, url_for
 
 from config import get_config
 from errors.handlers import register_error_handlers
@@ -27,14 +27,62 @@ def create_app():
     app.logger.info("Application started")
 
     @app.after_request
-    def track_page_activity(response):
+    def finalize_response(response):
+        set_response_headers(response)
+
         if response.status_code < 400 and not request.path.startswith("/api/"):
             endpoint = app.view_functions.get(request.endpoint) if request.endpoint else None
             if endpoint and request.endpoint != "static" and request.method == "GET":
                 record_activity("page_view", request.endpoint)
         return response
 
+    @app.route("/service-worker.js")
+    def service_worker():
+        response = send_from_directory(app.static_folder, "js/service-worker.js")
+        response.headers["Service-Worker-Allowed"] = "/"
+        return response
+
+    @app.route("/robots.txt")
+    def robots():
+        return Response(
+            "User-agent: *\nAllow: /\nSitemap: "
+            f"{url_for('sitemap', _external=True)}\n",
+            mimetype="text/plain",
+        )
+
+    @app.route("/sitemap.xml")
+    def sitemap():
+        routes = [
+            url_for("main_routes.index", _external=True),
+            url_for("main_routes.diagnosis", _external=True),
+            url_for("main_routes.results", _external=True),
+            url_for("main_routes.about", _external=True),
+            url_for("auth_routes.login", _external=True),
+            url_for("auth_routes.register", _external=True),
+        ]
+        body = "\n".join(
+            [
+                '<?xml version="1.0" encoding="UTF-8"?>',
+                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+                *[f"<url><loc>{route}</loc></url>" for route in routes],
+                "</urlset>",
+            ]
+        )
+        return Response(body, mimetype="application/xml")
+
     return app
+
+
+def set_response_headers(response):
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
+    response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+    response.headers.setdefault("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
+
+    if request.endpoint == "static":
+        response.headers["Cache-Control"] = "public, max-age=604800"
+    elif request.path == "/service-worker.js":
+        response.headers["Cache-Control"] = "no-cache"
 
 
 application = create_app()

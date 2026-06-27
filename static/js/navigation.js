@@ -5,6 +5,12 @@ const navLinks = Array.from(document.querySelectorAll("[data-nav-link]"));
 const themeToggle = document.querySelector("[data-theme-toggle]");
 const themeLabel = document.querySelector("[data-theme-label]");
 const printButtons = Array.from(document.querySelectorAll("[data-print-result]"));
+const mainContent = document.querySelector("main");
+
+if (mainContent && !mainContent.id) {
+    mainContent.id = "main-content";
+    mainContent.setAttribute("tabindex", "-1");
+}
 
 function setMenu(open) {
     document.body.classList.toggle("menu-open", open);
@@ -71,3 +77,9 @@ document.addEventListener("submit", (event) => {
 printButtons.forEach((button) => {
     button.addEventListener("click", () => window.print());
 });
+
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/service-worker.js").catch(() => {});
+    });
+}

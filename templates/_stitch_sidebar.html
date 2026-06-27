@@ -1,3 +1,4 @@
+<a class="skip-link" href="#main-content">Skip to content</a>
 <button class="mobile-menu-button" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle>
     <span class="material-symbols-outlined" data-icon="menu" aria-hidden="true"></span>
 </button>
@@ -10,7 +11,7 @@
         <h1 class="font-headline-sm text-headline-sm font-bold text-primary">Clinician Portal</h1>
         <p class="font-label-md text-label-md text-on-surface-variant">General Hospital</p>
     </div>
-    <nav class="flex-1 space-y-base">
+    <nav class="flex-1 space-y-base" aria-label="Primary navigation">
         <a data-nav-link class="flex items-center gap-md {% if active_page == 'home' %}bg-secondary-container text-primary font-semibold border-l-4 border-primary rounded-r-lg{% else %}text-on-surface-variant hover:bg-surface-container-high rounded-lg{% endif %} p-sm transition-all duration-200" href="{{ url_for('main_routes.index') }}">
             <span class="material-symbols-outlined" data-icon="home" aria-hidden="true"></span>
             <span class="font-body-md text-body-md">Home</span>

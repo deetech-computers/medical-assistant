@@ -6,6 +6,13 @@ All notable project changes are documented here.
 
 ### Added
 
+- Added shared SEO and social metadata.
+- Added favicon and web app manifest.
+- Added service worker and offline fallback page.
+- Added robots and sitemap endpoints.
+- Added accessibility skip link and primary navigation label.
+- Added static cache and browser security headers.
+- Added Phase 8 release notes, final checklist, and summary documentation.
 - Added Render deployment configuration.
 - Added Docker deployment configuration.
 - Added Procfile and Python runtime declaration.
@@ -59,6 +66,7 @@ All notable project changes are documented here.
 
 ### Changed
 
+- Cached symptom metadata loading to reduce repeated CSV reads.
 - Updated requirements with Gunicorn for production WSGI serving.
 - Updated shared visual styling with improved surfaces, focus states, shadows, animation, and responsive behavior.
 - Updated sidebar, topbar, cards, forms, and tables for a more polished healthcare dashboard feel.

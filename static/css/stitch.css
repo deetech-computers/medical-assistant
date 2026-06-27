@@ -93,6 +93,24 @@ button {
     cursor: pointer;
 }
 
+.skip-link {
+    position: fixed;
+    left: 16px;
+    top: 16px;
+    z-index: 100;
+    transform: translateY(-140%);
+    border-radius: 12px;
+    background: var(--primary);
+    color: var(--on-primary);
+    padding: 10px 14px;
+    font-weight: 800;
+    transition: transform 0.18s ease;
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}
+
 a:focus-visible,
 button:focus-visible,
 input:focus-visible {

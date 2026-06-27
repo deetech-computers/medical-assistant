@@ -122,6 +122,13 @@ Full deployment notes are in:
 docs/project/DEPLOYMENT_GUIDE.md
 ```
 
+Release notes and final readiness checks are in:
+
+```text
+docs/project/RELEASE_NOTES_V1.md
+docs/project/FINAL_PRODUCTION_CHECKLIST.md
+```
+
 ## Database
 
 SQLite remains the default development database. SQLAlchemy is now used for models, sessions, and repository queries.

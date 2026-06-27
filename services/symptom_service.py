@@ -1,3 +1,4 @@
+from functools import lru_cache
 from pathlib import Path
 
 import pandas as pd
@@ -29,6 +30,7 @@ SYMPTOM_CATEGORIES = {
 }
 
 
+@lru_cache(maxsize=1)
 def get_symptom_keys():
     dataset = pd.read_csv(DATA_PATH, nrows=1)
     return [column for column in dataset.columns if column != "disease"]
