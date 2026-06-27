@@ -29,8 +29,29 @@ Routes are defined in:
 - `routes/main_routes.py`
 - `routes/auth_routes.py`
 - `routes/admin_routes.py`
+- `routes/api_routes.py`
 
 Routes handle page rendering, redirects, and request coordination. Business rules should continue moving into services and validators.
+
+### API
+
+The application exposes a versioned JSON API under:
+
+```text
+/api/v1
+```
+
+The API supports health checks, symptoms, predictions, authentication, user history, and admin data. JSON responses use a shared success and error envelope from:
+
+```text
+utils/api_response.py
+```
+
+API request validation helpers live in:
+
+```text
+validators/api_validators.py
+```
 
 ### Services
 
@@ -128,6 +149,8 @@ errors/handlers.py
 ```
 
 The app supports friendly HTML error pages and JSON responses for clients that request JSON.
+
+Routes under `/api/` always receive JSON errors.
 
 ## Configuration
 

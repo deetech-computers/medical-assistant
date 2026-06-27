@@ -6,6 +6,13 @@ All notable project changes are documented here.
 
 ### Added
 
+- Added versioned API routes under `/api/v1`.
+- Added API health check endpoint.
+- Added standardized JSON success and error response helpers.
+- Added API authentication endpoints for register, login, logout, and current user.
+- Added API endpoints for symptoms, predictions, user history, admin summary, users, diagnoses, and activities.
+- Added API request validation helpers.
+- Added API documentation.
 - Added environment-based configuration for development, testing, and production.
 - Added `.env.example` for safe local and deployment configuration.
 - Added rotating file logging.
@@ -17,6 +24,9 @@ All notable project changes are documented here.
 
 ### Changed
 
+- Updated app initialization to register the API blueprint.
+- Updated activity tracking so automatic page view logging does not include API requests.
+- Updated session configuration with safer defaults.
 - Updated app initialization to load configuration from `config.py`.
 - Updated database access to support configurable database paths.
 - Updated authentication, diagnosis, and activity services to use repositories.

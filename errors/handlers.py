@@ -2,6 +2,9 @@ from flask import jsonify, render_template, request
 
 
 def wants_json_response():
+    if request.path.startswith("/api/"):
+        return True
+
     return request.accept_mimetypes["application/json"] >= request.accept_mimetypes["text/html"]
 
 

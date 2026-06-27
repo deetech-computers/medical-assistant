@@ -10,9 +10,9 @@ The project is an academic healthcare web application that predicts possible dis
 
 ## Current Phase
 
-Phase 1: Production Architecture Upgrade.
+Phase 2: Backend Modernization is complete.
 
-The active goal is to improve project structure, configuration, logging, validation, error handling, and database access organization without changing user-facing features or retraining the model.
+The next planned phase is Phase 3: Database Upgrade. That phase should keep SQLite working for development while preparing SQLAlchemy, migrations, and PostgreSQL support.
 
 ## Non-Negotiable Rules
 

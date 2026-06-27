@@ -2,16 +2,16 @@
 
 ## Current Phase
 
-The project is in Phase 1: Production Architecture Upgrade.
+Phase 2: Backend Modernization is complete.
 
-Phase 1 focuses on architecture, configuration, logging, validation, error handling, repository preparation, and documentation while preserving all existing user-facing behavior.
+The next phase is Phase 3: Database Upgrade.
 
 ## Phase Plan
 
 | Phase | Name | Goal | Status |
 | --- | --- | --- | --- |
-| 1 | Production Architecture | Add production-ready structure without changing features | In progress |
-| 2 | Backend Modernization | Add API structure, versioning, health checks, and stronger backend contracts | Pending |
+| 1 | Production Architecture | Add production-ready structure without changing features | Complete |
+| 2 | Backend Modernization | Add API structure, versioning, health checks, and stronger backend contracts | Complete |
 | 3 | Database Upgrade | Add SQLAlchemy, migrations, and PostgreSQL support | Pending |
 | 4 | Premium UI/UX | Improve the full frontend experience and visual system | Pending |
 | 5 | Prediction Experience | Improve result explanations, safety notes, and export options | Pending |
@@ -20,20 +20,17 @@ Phase 1 focuses on architecture, configuration, logging, validation, error handl
 | 8 | Optimization | Improve performance, accessibility, monitoring, and reliability | Pending |
 | 9 | Future Expansion | Prepare larger product capabilities and integrations | Pending |
 
-## Phase 1 Acceptance Criteria
+## Phase 2 Acceptance Criteria
 
-- Existing routes continue working.
-- Authentication continues working.
-- Prediction flow continues working.
-- History and admin pages continue working.
-- SQLite remains the active database.
-- No machine learning model change is made.
-- Configuration supports environment variables.
-- Logging is centralized.
-- Error handling is centralized.
-- Repository layer exists for future database migration.
-- Changelog and architecture documentation are updated.
+- Existing HTML routes continue working.
+- API routes are available under `/api/v1`.
+- JSON responses use a consistent envelope.
+- API authentication, prediction, history, and admin endpoints work.
+- A health endpoint is available for deployment checks.
+- Session settings are safer for production.
+- API documentation is available.
+- The machine learning model is unchanged.
 
 ## Next Phase
 
-After Phase 1 is approved, Phase 2 should modernize the backend while preserving the current HTML pages.
+After Phase 2 is approved, Phase 3 should upgrade the database layer while keeping SQLite working for development.

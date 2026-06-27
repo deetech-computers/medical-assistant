@@ -97,6 +97,34 @@ Change this before any public deployment.
 | `/admin/` | GET | Admin dashboard |
 | `/admin/users` | GET | Admin user list |
 
+## API Routes
+
+Versioned API endpoints are available under:
+
+```text
+/api/v1
+```
+
+Common endpoints:
+
+| Route | Method | Purpose |
+| --- | --- | --- |
+| `/api/v1/health` | GET | Backend health check |
+| `/api/v1/symptoms` | GET | Symptom options |
+| `/api/v1/predictions` | POST | Run prediction |
+| `/api/v1/auth/register` | POST | Register account |
+| `/api/v1/auth/login` | POST | Login |
+| `/api/v1/auth/logout` | POST | Logout |
+| `/api/v1/me` | GET | Current session |
+| `/api/v1/history` | GET | Logged-in user history |
+| `/api/v1/admin/summary` | GET | Admin summary |
+
+Full API notes are in:
+
+```text
+docs/project/API_DOCUMENTATION.md
+```
+
 ## Folder Structure
 
 ```text
