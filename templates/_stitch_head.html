@@ -3,9 +3,16 @@
 <style>
 body{opacity:0}html.app-ready body{opacity:1}.material-symbols-outlined{visibility:hidden}html.app-icons-ready .material-symbols-outlined{visibility:visible}.material-symbols-outlined::before{content:attr(data-icon)}
 </style>
+<script>
+(function () {
+    var savedTheme = localStorage.getItem("medscope-theme");
+    var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.dataset.theme = savedTheme || (prefersDark ? "dark" : "light");
+}());
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<link id="app-stylesheet" rel="stylesheet" href="{{ url_for('static', filename='css/stitch.css') }}?v=2026061701">
+<link id="app-stylesheet" rel="stylesheet" href="{{ url_for('static', filename='css/stitch.css') }}?v=2026062704">
 <script>
 (function () {
     function showPage() {

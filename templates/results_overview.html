@@ -23,6 +23,20 @@
                 <p class="text-body-lg text-on-surface-variant max-w-3xl">
                     The results screen appears after symptoms are selected and submitted. Logged-in users can also review saved records from the Records page.
                 </p>
+                <div class="result-preview-strip mt-xl">
+                    <div>
+                        <span class="material-symbols-outlined text-primary" data-icon="checklist" aria-hidden="true"></span>
+                        <span>Symptom review</span>
+                    </div>
+                    <div>
+                        <span class="material-symbols-outlined text-primary" data-icon="analytics" aria-hidden="true"></span>
+                        <span>Model result</span>
+                    </div>
+                    <div>
+                        <span class="material-symbols-outlined text-primary" data-icon="folder" aria-hidden="true"></span>
+                        <span>Saved record</span>
+                    </div>
+                </div>
                 <div class="flex flex-wrap gap-md mt-xl">
                     <a class="bg-primary text-on-primary py-md px-xl rounded-lg font-bold" href="{{ url_for('main_routes.diagnosis') }}">Start Diagnosis</a>
                     <a class="bg-secondary-container text-primary py-md px-xl rounded-lg font-bold" href="{{ url_for('auth_routes.login') }}">Login for Records</a>

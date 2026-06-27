@@ -4,6 +4,9 @@
 <div class="mobile-menu-backdrop" data-menu-backdrop></div>
 <aside class="fixed left-0 top-0 h-full w-[260px] bg-surface-container-low border-r border-outline-variant flex flex-col py-lg px-md z-40 app-sidebar" data-sidebar>
     <div class="mb-xl px-sm">
+        <div class="app-brand-mark" aria-hidden="true">
+            <span class="material-symbols-outlined" data-icon="ecg_heart"></span>
+        </div>
         <h1 class="font-headline-sm text-headline-sm font-bold text-primary">Clinician Portal</h1>
         <p class="font-label-md text-label-md text-on-surface-variant">General Hospital</p>
     </div>
@@ -43,6 +46,10 @@
         </a>
     </nav>
     <div class="mt-auto pt-lg border-t border-outline-variant">
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch color mode">
+            <span class="material-symbols-outlined" data-icon="dark_mode" aria-hidden="true"></span>
+            <span data-theme-label>Dark mode</span>
+        </button>
         <a data-nav-link class="w-full bg-primary-container text-on-primary py-sm rounded-lg font-semibold hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-xs" href="{{ url_for('main_routes.diagnosis') }}">
             <span class="material-symbols-outlined" data-icon="add_circle" aria-hidden="true"></span>
             <span>New Diagnosis</span>
@@ -61,6 +68,7 @@
                 {% endif %}
             </div>
         </div>
+        <p class="sidebar-footer-note">Educational diagnostic prototype</p>
     </div>
 </aside>
 <script src="{{ url_for('static', filename='js/navigation.js') }}"></script>

@@ -6,6 +6,15 @@ All notable project changes are documented here.
 
 ### Added
 
+- Added light and dark theme support with saved user preference.
+- Added color mode toggle in the sidebar.
+- Added global form loading state behavior.
+- Added print action behavior on result pages.
+- Added improved home dashboard statistics.
+- Added richer records empty state.
+- Added results overview workflow preview.
+- Added admin users summary cards.
+- Added Phase 4 UI summary documentation.
 - Added SQLAlchemy database models for users, diagnoses, and activities.
 - Added SQLAlchemy engine and session management.
 - Added Alembic migration setup and initial schema migration.
@@ -31,6 +40,8 @@ All notable project changes are documented here.
 
 ### Changed
 
+- Updated shared visual styling with improved surfaces, focus states, shadows, animation, and responsive behavior.
+- Updated sidebar, topbar, cards, forms, and tables for a more polished healthcare dashboard feel.
 - Updated repositories to use SQLAlchemy instead of direct SQLite queries.
 - Updated database initialization to create schemas through SQLAlchemy models.
 - Updated setup documentation with migration and seed commands.

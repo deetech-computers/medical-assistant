@@ -36,9 +36,13 @@
                     </div>
                 </article>
             {% else %}
-                <article class="col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
+                <article class="col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl p-xl tonal-card-shadow empty-state">
+                    <div class="w-14 h-14 bg-secondary-container rounded-2xl flex items-center justify-center text-primary mb-lg">
+                        <span class="material-symbols-outlined text-[32px]" data-icon="folder_open" aria-hidden="true"></span>
+                    </div>
                     <h2 class="font-headline-md text-headline-md text-primary">No records yet</h2>
-                    <p class="text-on-surface-variant">Run a symptom assessment while logged in to save results here.</p>
+                    <p class="text-on-surface-variant mb-lg">Run a symptom assessment while logged in to save results here.</p>
+                    <a class="bg-primary text-on-primary py-md px-xl rounded-lg font-bold inline-block" href="{{ url_for('main_routes.diagnosis') }}">Start Diagnosis</a>
                 </article>
             {% endfor %}
         </div>
