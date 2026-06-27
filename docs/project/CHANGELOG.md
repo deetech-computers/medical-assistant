@@ -6,6 +6,11 @@ All notable project changes are documented here.
 
 ### Added
 
+- Added prediction report insights with confidence level, risk score, severity, probability rows, recommendations, care notes, and safety messaging.
+- Added richer result report layout with PDF export support through the browser print flow.
+- Added saved-record insight summaries for user history.
+- Added prediction insight data to the versioned prediction API response.
+- Added Phase 5 prediction experience summary documentation.
 - Added light and dark theme support with saved user preference.
 - Added color mode toggle in the sidebar.
 - Added global form loading state behavior.

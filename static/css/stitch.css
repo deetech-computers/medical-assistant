@@ -657,6 +657,233 @@ button[data-loading="true"] {
     justify-content: center;
 }
 
+.report-shell {
+    position: relative;
+    overflow: hidden;
+}
+
+.report-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.report-score-card {
+    min-width: 170px;
+    border: 1px solid var(--outline-variant);
+    border-radius: 18px;
+    background: var(--surface-container-low);
+    padding: 18px;
+    text-align: center;
+}
+
+.report-score-card strong {
+    display: block;
+    color: var(--primary);
+    font-size: 40px;
+    line-height: 44px;
+}
+
+.report-score-card span {
+    color: var(--on-surface-variant);
+    font-weight: 700;
+}
+
+.report-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.metric-card {
+    border: 1px solid var(--outline-variant);
+    border-radius: 16px;
+    background: var(--surface-container-low);
+    padding: 18px;
+    min-width: 0;
+}
+
+.metric-card p {
+    margin: 10px 0 4px;
+    color: var(--on-surface-variant);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.metric-card strong {
+    display: block;
+    color: var(--primary);
+    font-size: 22px;
+    line-height: 28px;
+}
+
+.metric-card small {
+    display: block;
+    margin-top: 8px;
+    color: var(--on-surface-variant);
+    font-size: 13px;
+    line-height: 18px;
+}
+
+.severity-high {
+    border-color: rgba(186, 26, 26, 0.28);
+    background: rgba(255, 218, 214, 0.26);
+}
+
+.severity-medium {
+    border-color: rgba(82, 96, 105, 0.26);
+}
+
+.severity-low {
+    border-color: rgba(0, 6, 102, 0.14);
+}
+
+.meter-track {
+    width: 100%;
+    height: 8px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: var(--surface-container-high);
+}
+
+.meter-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--primary-container), var(--primary));
+}
+
+.probability-row > div:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.probability-row span {
+    color: var(--on-surface-variant);
+}
+
+.report-section-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.report-section-grid article {
+    border: 1px solid var(--outline-variant);
+    border-radius: 16px;
+    background: var(--surface-container-low);
+    padding: 18px;
+}
+
+.report-section-grid h3 {
+    color: var(--primary);
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 12px;
+}
+
+.report-section-grid ul {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--on-surface-variant);
+}
+
+.report-section-grid li + li {
+    margin-top: 8px;
+}
+
+.care-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    border: 1px solid var(--outline-variant);
+    border-radius: 14px;
+    background: var(--surface-container-low);
+    padding: 14px;
+}
+
+.care-note + .care-note {
+    margin-top: 12px;
+}
+
+.care-note p {
+    margin: 0;
+    color: var(--on-surface-variant);
+}
+
+.warning-panel,
+.disclaimer-panel {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    border: 1px solid rgba(186, 26, 26, 0.22);
+    border-radius: 16px;
+    background: rgba(255, 218, 214, 0.22);
+    padding: 16px;
+}
+
+.warning-panel h2 {
+    color: var(--on-error-container);
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 4px;
+}
+
+.warning-panel p,
+.disclaimer-panel p {
+    margin: 0;
+    color: var(--on-surface-variant);
+}
+
+.disclaimer-panel {
+    align-items: center;
+    justify-content: space-between;
+    border-color: var(--outline-variant);
+    background: var(--surface-container-low);
+}
+
+.disclaimer-panel a {
+    color: var(--primary);
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.history-card-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.35fr);
+    gap: 18px;
+    align-items: start;
+}
+
+.history-insight {
+    border: 1px solid var(--outline-variant);
+    border-radius: 14px;
+    background: var(--surface-container-low);
+    padding: 14px;
+}
+
+.history-insight > div:not(.meter-track) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.history-insight span {
+    color: var(--on-surface-variant);
+}
+
+.history-insight strong {
+    color: var(--primary);
+}
+
 input,
 select,
 textarea {
@@ -990,6 +1217,23 @@ main > header:has(+ form#diagnosis) {
     .result-preview-strip {
         grid-template-columns: 1fr;
     }
+
+    .report-header,
+    .disclaimer-panel {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .report-score-card {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .report-metrics,
+    .report-section-grid,
+    .history-card-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 560px) {
@@ -1239,6 +1483,7 @@ main > header:has(+ form#diagnosis) {
     .bg-primary.text-on-primary.py-md.px-xl,
     .bg-secondary-container.text-primary.py-md.px-xl,
     .bg-white.text-primary-container.font-bold.px-xl,
+    .bg-primary.text-on-primary.py-sm.px-md,
     .whitespace-nowrap.bg-primary.text-on-primary {
         width: 100%;
         justify-content: center;
@@ -1324,5 +1569,43 @@ main > header:has(+ form#diagnosis) {
     .text-display-lg {
         font-size: 24px;
         line-height: 30px;
+    }
+}
+
+@media print {
+    body {
+        background: #ffffff;
+        color: #111111;
+    }
+
+    .mobile-menu-button,
+    .mobile-menu-backdrop,
+    .app-sidebar,
+    .app-topbar,
+    .report-actions,
+    .disclaimer-panel a {
+        display: none !important;
+    }
+
+    main.ml-\[260px\] {
+        margin-left: 0;
+        padding-top: 0;
+    }
+
+    .p-xl {
+        padding: 0;
+    }
+
+    .tonal-card-shadow,
+    .report-shell,
+    section.bg-surface-container-lowest,
+    article.bg-surface-container-lowest {
+        box-shadow: none;
+    }
+
+    .report-shell,
+    section,
+    article {
+        break-inside: avoid;
     }
 }

@@ -10,6 +10,8 @@ The project is for academic prototype use and is not a replacement for professio
 - Review step before prediction
 - Decision Tree based disease prediction
 - Confidence-style match percentage
+- Risk score, severity note, and practical care guidance
+- Printable prediction report
 - Guest diagnosis support
 - User registration and login
 - Saved diagnosis history for logged-in users

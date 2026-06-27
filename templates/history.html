@@ -23,16 +23,35 @@
                         <div>
                             <p class="font-label-md text-label-md text-on-surface-variant uppercase">{{ diagnosis.created_at }}</p>
                             <h2 class="font-headline-md text-headline-md text-primary">{{ diagnosis.disease }}</h2>
+                            <p class="text-body-md text-on-surface-variant mt-xs">{{ diagnosis.insights.summary }}</p>
                         </div>
                         <div class="bg-secondary-container px-md py-sm rounded-lg text-center">
                             <p class="text-label-sm font-label-sm text-secondary uppercase">Match</p>
                             <p class="font-headline-md text-headline-md text-primary-container">{{ diagnosis.confidence or 0 }}%</p>
                         </div>
                     </div>
-                    <div class="flex flex-wrap gap-xs">
-                        {% for symptom in diagnosis.symptom_labels %}
-                            <span class="bg-primary/5 text-primary-container font-body-md px-md py-xs rounded-full border border-primary/10">{{ symptom }}</span>
-                        {% endfor %}
+                    <div class="history-card-grid">
+                        <div>
+                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-sm">Symptoms</h3>
+                            <div class="flex flex-wrap gap-xs">
+                                {% for symptom in diagnosis.symptom_labels %}
+                                    <span class="bg-primary/5 text-primary-container font-body-md px-md py-xs rounded-full border border-primary/10">{{ symptom }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="history-insight">
+                            <div>
+                                <span>Severity</span>
+                                <strong>{{ diagnosis.insights.severity.label }}</strong>
+                            </div>
+                            <div>
+                                <span>Risk score</span>
+                                <strong>{{ diagnosis.insights.risk_score }}/100</strong>
+                            </div>
+                            <div class="meter-track">
+                                <div class="meter-fill" style="width: {{ diagnosis.insights.risk_score }}%;"></div>
+                            </div>
+                        </div>
                     </div>
                 </article>
             {% else %}

@@ -14,17 +14,17 @@
                 <span class="font-headline-md text-headline-md font-bold text-primary">Disease Prediction</span>
                 <div class="h-6 w-[1px] bg-outline-variant mx-md"></div>
                 <nav class="hidden md:flex gap-lg">
-                    <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="{{ url_for('main_routes.diagnosis') }}">Patients</a>
+                    <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="{{ url_for('main_routes.diagnosis') }}">New case</a>
                     {% if current_user %}
-                        <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="{{ url_for('main_routes.history') }}">History</a>
+                        <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="{{ url_for('main_routes.history') }}">Records</a>
                     {% endif %}
-                    <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="{{ url_for('main_routes.about') }}">Reports</a>
+                    <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="{{ url_for('main_routes.about') }}">About</a>
                 </nav>
             </div>
-            <div class="flex items-center gap-lg">
-                <span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications" aria-hidden="true"></span>
-                <span class="material-symbols-outlined text-on-surface-variant" data-icon="settings" aria-hidden="true"></span>
-            </div>
+            <button class="bg-primary text-on-primary py-sm px-md rounded-lg font-semibold flex items-center gap-xs" type="button" data-print-result>
+                <span class="material-symbols-outlined text-[18px]" data-icon="picture_as_pdf" aria-hidden="true"></span>
+                Export PDF
+            </button>
         </header>
 
         <div class="flex-1 p-xl" data-confidence="{{ result.confidence or 0 }}">
@@ -35,13 +35,13 @@
                         <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary border-4 border-surface shadow-sm">
                             <span class="material-symbols-outlined text-[20px]" data-icon="check" aria-hidden="true"></span>
                         </div>
-                        <span class="mt-xs font-label-md text-label-md text-primary">Demographics</span>
+                        <span class="mt-xs font-label-md text-label-md text-primary">Select Symptoms</span>
                     </div>
                     <div class="relative z-10 flex flex-col items-center">
                         <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary border-4 border-surface shadow-sm">
                             <span class="material-symbols-outlined text-[20px]" data-icon="check" aria-hidden="true"></span>
                         </div>
-                        <span class="mt-xs font-label-md text-label-md text-primary">Symptom Input</span>
+                        <span class="mt-xs font-label-md text-label-md text-primary">Review</span>
                     </div>
                     <div class="relative z-10 flex flex-col items-center">
                         <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary border-4 border-surface shadow-md">
@@ -51,24 +51,49 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-12 gap-md">
-                    <div class="col-span-12 lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
-                        <div class="flex justify-between items-start mb-xl">
-                            <div>
-                                <p class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider mb-xs">Diagnostic Assessment</p>
-                                <h2 class="font-headline-md text-headline-md text-primary">Possible Condition: {{ result.disease }}</h2>
-                            </div>
-                            <div class="bg-secondary-container px-md py-sm rounded-lg text-center">
-                                <p class="text-label-sm font-label-sm text-secondary uppercase">Confidence</p>
-                                <p class="font-headline-md text-headline-md text-primary-container" data-confidence-label>{{ result.confidence or 0 }}%</p>
-                            </div>
+                <section class="report-shell bg-surface-container-lowest border border-outline-variant rounded-xl p-xl tonal-card-shadow">
+                    <div class="report-header">
+                        <div>
+                            <p class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider mb-xs">Prediction report</p>
+                            <h1 class="font-display-lg text-display-lg text-primary mb-sm">{{ result.disease }}</h1>
+                            <p class="text-body-lg text-on-surface-variant max-w-3xl">{{ result.insights.summary }}</p>
                         </div>
-                        <div class="w-full h-3 bg-surface-container rounded-full overflow-hidden mb-xl">
-                            <div class="h-full bg-primary-container rounded-full" data-confidence-fill></div>
+                        <div class="report-score-card">
+                            <p class="text-label-sm font-label-sm text-secondary uppercase">Match</p>
+                            <strong data-confidence-label>{{ result.confidence or 0 }}%</strong>
+                            <span>{{ result.insights.confidence_level.label }}</span>
                         </div>
+                    </div>
+
+                    <div class="report-metrics">
+                        <article class="metric-card">
+                            <span class="material-symbols-outlined text-primary" data-icon="verified" aria-hidden="true"></span>
+                            <p>Confidence</p>
+                            <strong>{{ result.insights.confidence_level.label }}</strong>
+                            <small>{{ result.insights.confidence_level.message }}</small>
+                        </article>
+                        <article class="metric-card">
+                            <span class="material-symbols-outlined text-primary" data-icon="speed" aria-hidden="true"></span>
+                            <p>Risk score</p>
+                            <strong>{{ result.insights.risk_score }}/100</strong>
+                            <div class="meter-track">
+                                <div class="meter-fill" style="width: {{ result.insights.risk_score }}%;"></div>
+                            </div>
+                        </article>
+                        <article class="metric-card severity-{{ result.insights.severity.tone }}">
+                            <span class="material-symbols-outlined text-primary" data-icon="health_and_safety" aria-hidden="true"></span>
+                            <p>Severity</p>
+                            <strong>{{ result.insights.severity.label }}</strong>
+                            <small>{{ result.insights.severity.message }}</small>
+                        </article>
+                    </div>
+                </section>
+
+                <div class="grid grid-cols-12 gap-md report-grid">
+                    <section class="col-span-12 lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
                             <div>
-                                <h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-md">Selected Symptoms</h3>
+                                <h2 class="font-headline-sm text-headline-sm text-primary mb-md">Selected symptoms</h2>
                                 <div class="flex flex-wrap gap-xs">
                                     {% for symptom in result.selected_symptoms %}
                                         <span class="bg-primary/5 text-primary-container font-body-md px-md py-xs rounded-full border border-primary/10">{{ symptom_label(symptom) }}</span>
@@ -76,33 +101,58 @@
                                 </div>
                             </div>
                             <div>
-                                <h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-md">Key Findings</h3>
-                                <ul class="space-y-sm">
-                                    <li class="flex items-start gap-sm">
-                                        <span class="material-symbols-outlined text-primary text-[18px]" data-icon="info" aria-hidden="true"></span>
-                                        <span class="text-body-md text-on-surface-variant" data-confidence-note></span>
-                                    </li>
-                                    <li class="flex items-start gap-sm">
-                                        <span class="material-symbols-outlined text-primary text-[18px]" data-icon="info" aria-hidden="true"></span>
-                                        <span class="text-body-md text-on-surface-variant">This result is based on symptom patterns in the project dataset.</span>
-                                    </li>
-                                </ul>
+                                <h2 class="font-headline-sm text-headline-sm text-primary mb-md">Probability view</h2>
+                                <div class="space-y-md">
+                                    {% for row in result.insights.probability_rows %}
+                                        <div class="probability-row">
+                                            <div>
+                                                <span>{{ row.label }}</span>
+                                                <strong>{{ row.value }}%</strong>
+                                            </div>
+                                            <div class="meter-track">
+                                                <div class="meter-fill" style="width: {{ row.value }}%;"></div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
-                        <div class="mt-xl pt-lg border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-md">
-                            <div class="flex items-center gap-sm bg-error-container/20 p-md rounded-xl border border-error-container/40">
-                                <span class="material-symbols-outlined text-error" data-icon="warning" aria-hidden="true"></span>
-                                <p class="text-body-md text-on-error-container leading-tight">
-                                    <strong>Recommendation note:</strong> This prediction is not a clinical diagnosis.
-                                </p>
-                            </div>
-                            <a class="whitespace-nowrap bg-primary text-on-primary py-lg px-xl rounded-xl font-bold transition-all hover:shadow-lg active:scale-95 text-lg" href="{{ url_for('main_routes.diagnosis') }}">Start New Assessment</a>
-                        </div>
-                    </div>
 
-                    <div class="col-span-12 lg:col-span-4 space-y-md">
-                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md tonal-card-shadow">
-                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-md">Patient Context</h3>
+                        <div class="report-section-grid mt-xl">
+                            <article>
+                                <h3>Health recommendations</h3>
+                                <ul>
+                                    {% for recommendation in result.insights.recommendations %}
+                                        <li>{{ recommendation }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </article>
+                            <article>
+                                <h3>Lifestyle suggestions</h3>
+                                <ul>
+                                    {% for suggestion in result.insights.lifestyle_suggestions %}
+                                        <li>{{ suggestion }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </article>
+                        </div>
+                    </section>
+
+                    <aside class="col-span-12 lg:col-span-4 space-y-md">
+                        <section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md tonal-card-shadow">
+                            <h2 class="font-headline-sm text-headline-sm text-primary mb-md">Care notes</h2>
+                            <div class="care-note">
+                                <span class="material-symbols-outlined text-primary" data-icon="water_drop" aria-hidden="true"></span>
+                                <p>{{ result.insights.hydration_advice }}</p>
+                            </div>
+                            <div class="care-note">
+                                <span class="material-symbols-outlined text-primary" data-icon="self_improvement" aria-hidden="true"></span>
+                                <p>{{ result.insights.recovery_advice }}</p>
+                            </div>
+                        </section>
+
+                        <section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md tonal-card-shadow">
+                            <h2 class="font-headline-sm text-headline-sm text-primary mb-md">Record details</h2>
                             <div class="space-y-sm">
                                 <div class="flex justify-between items-center py-xs border-b border-surface-container">
                                     <span class="text-on-surface-variant text-body-md">Account mode</span>
@@ -110,41 +160,27 @@
                                 </div>
                                 <div class="flex justify-between items-center py-xs border-b border-surface-container">
                                     <span class="text-on-surface-variant text-body-md">Record status</span>
-                                    <span class="px-sm py-[2px] bg-secondary-fixed text-on-secondary-fixed rounded-full text-label-sm font-bold">{{ 'STORED' if current_user else 'TEMPORARY' }}</span>
+                                    <span class="px-sm py-[2px] bg-secondary-fixed text-on-secondary-fixed rounded-full text-label-sm font-bold">{{ 'Stored' if current_user else 'Temporary' }}</span>
                                 </div>
                                 <div class="flex justify-between items-center py-xs">
                                     <span class="text-on-surface-variant text-body-md">Model</span>
                                     <span class="font-semibold text-primary">Decision Tree</span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md tonal-card-shadow overflow-hidden relative">
-                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-md">Statistical Probability</h3>
-                            <div class="space-y-lg">
-                                <div class="space-y-xs">
-                                    <div class="flex justify-between text-label-sm font-bold">
-                                        <span>{{ result.disease }}</span>
-                                        <span>{{ result.confidence or 0 }}%</span>
-                                    </div>
-                                    <div class="w-full h-1.5 bg-surface-container rounded-full">
-                                        <div class="h-full bg-primary-container rounded-full" data-confidence-fill></div>
-                                    </div>
-                                </div>
-                                <div class="space-y-xs">
-                                    <div class="flex justify-between text-label-sm font-bold text-on-surface-variant">
-                                        <span>Other dataset classes</span>
-                                        <span>{{ 100 - (result.confidence or 0) }}%</span>
-                                    </div>
-                                    <div class="w-full h-1.5 bg-surface-container rounded-full">
-                                        <div class="h-full bg-outline rounded-full" style="width: 20%;"></div>
-                                    </div>
-                                </div>
+                        </section>
+
+                        <section class="warning-panel">
+                            <span class="material-symbols-outlined text-error" data-icon="warning" aria-hidden="true"></span>
+                            <div>
+                                <h2>Emergency note</h2>
+                                <p>{{ result.insights.emergency_warning }}</p>
                             </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-sm">
+                        </section>
+
+                        <div class="grid grid-cols-2 gap-sm report-actions">
                             <button class="flex flex-col items-center justify-center gap-xs p-md bg-white border border-outline-variant rounded-xl hover:bg-surface transition-colors" type="button" data-print-result>
-                                <span class="material-symbols-outlined text-primary" data-icon="print" aria-hidden="true"></span>
-                                <span class="text-label-md">Print PDF</span>
+                                <span class="material-symbols-outlined text-primary" data-icon="picture_as_pdf" aria-hidden="true"></span>
+                                <span class="text-label-md">Export PDF</span>
                             </button>
                             {% if current_user %}
                                 <a class="flex flex-col items-center justify-center gap-xs p-md bg-white border border-outline-variant rounded-xl hover:bg-surface transition-colors" href="{{ url_for('main_routes.history') }}">
@@ -158,8 +194,14 @@
                                 </a>
                             {% endif %}
                         </div>
-                    </div>
+                    </aside>
                 </div>
+
+                <section class="disclaimer-panel">
+                    <span class="material-symbols-outlined text-primary" data-icon="info" aria-hidden="true"></span>
+                    <p>{{ result.insights.disclaimer }}</p>
+                    <a href="{{ url_for('main_routes.diagnosis') }}">Start new assessment</a>
+                </section>
             </div>
         </div>
     </main>

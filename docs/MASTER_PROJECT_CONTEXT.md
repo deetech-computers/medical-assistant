@@ -10,9 +10,9 @@ The project is an academic healthcare web application that predicts possible dis
 
 ## Current Phase
 
-Phase 4: Premium UI/UX is complete.
+Phase 5: Prediction Experience is complete.
 
-The next planned phase is Phase 5: Prediction Experience. That phase should improve result interpretation and report quality without retraining the model.
+The next planned phase is Phase 6: Admin Analytics. That phase should improve admin reporting, charts, filters, and exports.
 
 ## Non-Negotiable Rules
 

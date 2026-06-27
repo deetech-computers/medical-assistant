@@ -43,6 +43,7 @@ def serialize_diagnosis(diagnosis):
         "user_email": diagnosis.get("email"),
         "disease": diagnosis.get("disease"),
         "confidence": diagnosis.get("confidence"),
+        "insights": diagnosis.get("insights"),
         "symptoms": diagnosis.get("symptom_labels", []),
         "created_at": diagnosis.get("created_at"),
     }
@@ -130,6 +131,7 @@ def create_prediction_record():
             "id": diagnosis_id,
             "disease": result["disease"],
             "confidence": result["confidence"],
+            "insights": result["insights"],
             "selected_symptoms": [
                 {
                     "key": symptom,

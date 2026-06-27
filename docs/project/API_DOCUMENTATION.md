@@ -77,6 +77,14 @@ Response status:
 
 The prediction is saved as a diagnosis record. If a user is logged in, the record is linked to that user.
 
+Response data includes:
+
+- saved diagnosis id
+- predicted disease
+- confidence percentage
+- selected symptom labels
+- report insights with confidence level, risk score, severity, probability rows, recommendations, care notes, emergency warning, and disclaimer
+
 ## Authentication
 
 ### POST `/api/v1/auth/register`
