@@ -6,6 +6,13 @@ All notable project changes are documented here.
 
 ### Added
 
+- Added SQLAlchemy database models for users, diagnoses, and activities.
+- Added SQLAlchemy engine and session management.
+- Added Alembic migration setup and initial schema migration.
+- Added PostgreSQL-ready `DATABASE_URL` support.
+- Added database indexes for common query paths.
+- Added explicit database seed command.
+- Added Phase 3 database summary documentation.
 - Added versioned API routes under `/api/v1`.
 - Added API health check endpoint.
 - Added standardized JSON success and error response helpers.
@@ -24,6 +31,9 @@ All notable project changes are documented here.
 
 ### Changed
 
+- Updated repositories to use SQLAlchemy instead of direct SQLite queries.
+- Updated database initialization to create schemas through SQLAlchemy models.
+- Updated setup documentation with migration and seed commands.
 - Updated app initialization to register the API blueprint.
 - Updated activity tracking so automatic page view logging does not include API requests.
 - Updated session configuration with safer defaults.

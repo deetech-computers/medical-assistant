@@ -1,75 +1,45 @@
-import sqlite3
-from pathlib import Path
-
-from flask import current_app, has_app_context
+from sqlalchemy import text
 from werkzeug.security import generate_password_hash
 
-
-BASE_DIR = Path(__file__).resolve().parents[1]
-DB_PATH = BASE_DIR / "data" / "medscope.db"
-
-
-def get_database_path():
-    if has_app_context():
-        return Path(current_app.config["DATABASE_PATH"])
-    return DB_PATH
-
-
-def get_connection():
-    connection = sqlite3.connect(get_database_path())
-    connection.row_factory = sqlite3.Row
-    return connection
+from database.models import User
+from database.session import create_schema, database_session
 
 
 def init_database():
-    with get_connection() as connection:
-        connection.executescript(
-            """
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                email TEXT NOT NULL UNIQUE,
-                password_hash TEXT NOT NULL,
-                role TEXT NOT NULL DEFAULT 'user',
-                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-            );
+    create_schema()
+    ensure_indexes()
+    seed_default_admin()
 
-            CREATE TABLE IF NOT EXISTS diagnoses (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER,
-                disease TEXT NOT NULL,
-                confidence INTEGER,
-                symptoms TEXT NOT NULL,
-                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users(id)
-            );
 
-            CREATE TABLE IF NOT EXISTS activities (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER,
-                event_type TEXT NOT NULL,
-                details TEXT,
-                path TEXT,
-                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users(id)
-            );
-            """
-        )
+def ensure_indexes():
+    index_statements = [
+        "CREATE INDEX IF NOT EXISTS ix_users_role ON users (role)",
+        "CREATE INDEX IF NOT EXISTS ix_users_created_at ON users (created_at)",
+        "CREATE INDEX IF NOT EXISTS ix_diagnoses_user_id ON diagnoses (user_id)",
+        "CREATE INDEX IF NOT EXISTS ix_diagnoses_disease ON diagnoses (disease)",
+        "CREATE INDEX IF NOT EXISTS ix_diagnoses_created_at ON diagnoses (created_at)",
+        "CREATE INDEX IF NOT EXISTS ix_activities_user_id ON activities (user_id)",
+        "CREATE INDEX IF NOT EXISTS ix_activities_event_type ON activities (event_type)",
+        "CREATE INDEX IF NOT EXISTS ix_activities_created_at ON activities (created_at)",
+    ]
 
-        admin_exists = connection.execute(
-            "SELECT id FROM users WHERE role = 'admin' LIMIT 1"
-        ).fetchone()
+    with database_session() as session:
+        for statement in index_statements:
+            session.execute(text(statement))
 
-        if not admin_exists:
-            connection.execute(
-                """
-                INSERT INTO users (name, email, password_hash, role)
-                VALUES (?, ?, ?, ?)
-                """,
-                (
-                    "System Admin",
-                    "admin@medscope.local",
-                    generate_password_hash("Admin@12345"),
-                    "admin",
-                ),
+
+def seed_default_admin():
+    with database_session() as session:
+        admin_exists = session.query(User.id).filter(User.role == "admin").first()
+
+        if admin_exists:
+            return
+
+        session.add(
+            User(
+                name="System Admin",
+                email="admin@medscope.local",
+                password_hash=generate_password_hash("Admin@12345"),
+                role="admin",
             )
+        )

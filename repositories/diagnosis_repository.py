@@ -1,40 +1,49 @@
-from services.database_service import get_connection
+from sqlalchemy import select
+
+from database.models import Diagnosis, User, serialize_datetime
+from database.session import database_session
 
 
 def create(user_id, disease, confidence, symptoms):
-    with get_connection() as connection:
-        cursor = connection.execute(
-            """
-            INSERT INTO diagnoses (user_id, disease, confidence, symptoms)
-            VALUES (?, ?, ?, ?)
-            """,
-            (user_id, disease, confidence, symptoms),
+    with database_session() as session:
+        diagnosis = Diagnosis(
+            user_id=user_id,
+            disease=disease,
+            confidence=confidence,
+            symptoms=symptoms,
         )
-
-        return cursor.lastrowid
+        session.add(diagnosis)
+        session.flush()
+        return diagnosis.id
 
 
 def list_by_user(user_id):
-    with get_connection() as connection:
-        return connection.execute(
-            """
-            SELECT * FROM diagnoses
-            WHERE user_id = ?
-            ORDER BY created_at DESC
-            """,
-            (user_id,),
-        ).fetchall()
+    with database_session() as session:
+        diagnoses = session.scalars(
+            select(Diagnosis)
+            .where(Diagnosis.user_id == user_id)
+            .order_by(Diagnosis.created_at.desc())
+        ).all()
+
+        return [diagnosis.to_dict() for diagnosis in diagnoses]
 
 
 def list_recent(limit=40):
-    with get_connection() as connection:
-        return connection.execute(
-            """
-            SELECT diagnoses.*, users.name, users.email
-            FROM diagnoses
-            LEFT JOIN users ON users.id = diagnoses.user_id
-            ORDER BY diagnoses.created_at DESC
-            LIMIT ?
-            """,
-            (limit,),
-        ).fetchall()
+    with database_session() as session:
+        rows = session.execute(
+            select(Diagnosis, User.name, User.email)
+            .outerjoin(User, User.id == Diagnosis.user_id)
+            .order_by(Diagnosis.created_at.desc())
+            .limit(limit)
+        ).all()
+
+        records = []
+
+        for diagnosis, name, email in rows:
+            record = diagnosis.to_dict()
+            record["name"] = name
+            record["email"] = email
+            record["created_at"] = serialize_datetime(diagnosis.created_at)
+            records.append(record)
+
+        return records

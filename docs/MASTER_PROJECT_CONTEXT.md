@@ -10,9 +10,9 @@ The project is an academic healthcare web application that predicts possible dis
 
 ## Current Phase
 
-Phase 2: Backend Modernization is complete.
+Phase 3: Database Upgrade is complete.
 
-The next planned phase is Phase 3: Database Upgrade. That phase should keep SQLite working for development while preparing SQLAlchemy, migrations, and PostgreSQL support.
+The next planned phase is Phase 4: Premium UI/UX. That phase should improve the frontend experience without changing backend behavior or retraining the model.
 
 ## Non-Negotiable Rules
 
@@ -56,6 +56,9 @@ result page
 - Python
 - Flask
 - SQLite
+- SQLAlchemy
+- Alembic
+- PostgreSQL support
 - Pandas
 - Scikit-learn
 - Joblib

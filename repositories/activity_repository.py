@@ -1,42 +1,48 @@
-from services.database_service import get_connection
+from sqlalchemy import func, select
+
+from database.models import Activity, Diagnosis, User
+from database.session import database_session
 
 
 def create(user_id, event_type, details, path):
-    with get_connection() as connection:
-        connection.execute(
-            """
-            INSERT INTO activities (user_id, event_type, details, path)
-            VALUES (?, ?, ?, ?)
-            """,
-            (user_id, event_type, details, path),
+    with database_session() as session:
+        session.add(
+            Activity(
+                user_id=user_id,
+                event_type=event_type,
+                details=details,
+                path=path,
+            )
         )
 
 
 def list_recent(limit=40):
-    with get_connection() as connection:
-        return connection.execute(
-            """
-            SELECT activities.*, users.name, users.email
-            FROM activities
-            LEFT JOIN users ON users.id = activities.user_id
-            ORDER BY activities.created_at DESC
-            LIMIT ?
-            """,
-            (limit,),
-        ).fetchall()
+    with database_session() as session:
+        rows = session.execute(
+            select(Activity, User.name, User.email)
+            .outerjoin(User, User.id == Activity.user_id)
+            .order_by(Activity.created_at.desc())
+            .limit(limit)
+        ).all()
+
+        records = []
+
+        for activity, name, email in rows:
+            record = activity.to_dict()
+            record["name"] = name
+            record["email"] = email
+            records.append(record)
+
+        return records
 
 
 def summary():
-    with get_connection() as connection:
+    with database_session() as session:
         return {
-            "user_count": connection.execute("SELECT COUNT(*) FROM users").fetchone()[0],
-            "diagnosis_count": connection.execute(
-                "SELECT COUNT(*) FROM diagnoses"
-            ).fetchone()[0],
-            "activity_count": connection.execute(
-                "SELECT COUNT(*) FROM activities"
-            ).fetchone()[0],
-            "guest_diagnosis_count": connection.execute(
-                "SELECT COUNT(*) FROM diagnoses WHERE user_id IS NULL"
-            ).fetchone()[0],
+            "user_count": session.scalar(select(func.count(User.id))),
+            "diagnosis_count": session.scalar(select(func.count(Diagnosis.id))),
+            "activity_count": session.scalar(select(func.count(Activity.id))),
+            "guest_diagnosis_count": session.scalar(
+                select(func.count(Diagnosis.id)).where(Diagnosis.user_id.is_(None))
+            ),
         }

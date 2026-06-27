@@ -2,9 +2,9 @@
 
 ## Current Phase
 
-Phase 2: Backend Modernization is complete.
+Phase 3: Database Upgrade is complete.
 
-The next phase is Phase 3: Database Upgrade.
+The next phase is Phase 4: Premium UI/UX.
 
 ## Phase Plan
 
@@ -12,7 +12,7 @@ The next phase is Phase 3: Database Upgrade.
 | --- | --- | --- | --- |
 | 1 | Production Architecture | Add production-ready structure without changing features | Complete |
 | 2 | Backend Modernization | Add API structure, versioning, health checks, and stronger backend contracts | Complete |
-| 3 | Database Upgrade | Add SQLAlchemy, migrations, and PostgreSQL support | Pending |
+| 3 | Database Upgrade | Add SQLAlchemy, migrations, and PostgreSQL support | Complete |
 | 4 | Premium UI/UX | Improve the full frontend experience and visual system | Pending |
 | 5 | Prediction Experience | Improve result explanations, safety notes, and export options | Pending |
 | 6 | Admin Analytics | Add charts, filters, reporting, and exports | Pending |
@@ -20,17 +20,17 @@ The next phase is Phase 3: Database Upgrade.
 | 8 | Optimization | Improve performance, accessibility, monitoring, and reliability | Pending |
 | 9 | Future Expansion | Prepare larger product capabilities and integrations | Pending |
 
-## Phase 2 Acceptance Criteria
+## Phase 3 Acceptance Criteria
 
-- Existing HTML routes continue working.
-- API routes are available under `/api/v1`.
-- JSON responses use a consistent envelope.
-- API authentication, prediction, history, and admin endpoints work.
-- A health endpoint is available for deployment checks.
-- Session settings are safer for production.
-- API documentation is available.
-- The machine learning model is unchanged.
+- SQLite remains the default development database.
+- SQLAlchemy models represent the database schema.
+- Repositories use SQLAlchemy queries.
+- Alembic migrations are available.
+- PostgreSQL is supported through `DATABASE_URL`.
+- Indexes exist for common user, diagnosis, and activity queries.
+- Default admin seeding remains available.
+- Existing pages and API endpoints continue working.
 
 ## Next Phase
 
-After Phase 2 is approved, Phase 3 should upgrade the database layer while keeping SQLite working for development.
+After Phase 3 is approved, Phase 4 should improve the frontend experience without changing backend behavior.

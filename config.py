@@ -6,9 +6,22 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 
 
+def build_database_uri(database_path):
+    database_url = os.getenv("DATABASE_URL")
+
+    if database_url:
+        if database_url.startswith("postgres://"):
+            return database_url.replace("postgres://", "postgresql+psycopg2://", 1)
+        return database_url
+
+    return f"sqlite:///{Path(database_path).resolve().as_posix()}"
+
+
 class BaseConfig:
     SECRET_KEY = os.getenv("SECRET_KEY", "medscope-local-development-key")
     DATABASE_PATH = Path(os.getenv("DATABASE_PATH", BASE_DIR / "data" / "medscope.db"))
+    SQLALCHEMY_DATABASE_URI = build_database_uri(DATABASE_PATH)
+    SQLALCHEMY_ECHO = os.getenv("SQLALCHEMY_ECHO", "false").lower() == "true"
     LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
     LOG_FILE = Path(os.getenv("LOG_FILE", BASE_DIR / "logs" / "app.log"))
     ENV_NAME = os.getenv("FLASK_CONFIG", "development").lower()
@@ -30,6 +43,7 @@ class DevelopmentConfig(BaseConfig):
 class TestingConfig(BaseConfig):
     TESTING = True
     DATABASE_PATH = Path(os.getenv("TEST_DATABASE_PATH", BASE_DIR / "data" / "test_medscope.db"))
+    SQLALCHEMY_DATABASE_URI = build_database_uri(DATABASE_PATH)
 
 
 class ProductionConfig(BaseConfig):

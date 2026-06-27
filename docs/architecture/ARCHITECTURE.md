@@ -16,7 +16,8 @@ Routes
 Validators
 Services
 Repositories
-SQLite database
+SQLAlchemy models and sessions
+SQLite or PostgreSQL database
 Machine learning predictor
 ```
 
@@ -72,7 +73,21 @@ Repositories isolate database queries:
 - `repositories/diagnosis_repository.py`
 - `repositories/activity_repository.py`
 
-This prepares the app for a future SQLAlchemy and PostgreSQL migration without changing the user experience.
+Repositories use SQLAlchemy sessions and return plain dictionaries to keep templates, services, and API serializers stable.
+
+### Database Models
+
+SQLAlchemy models live in:
+
+```text
+database/models.py
+```
+
+Session and engine management live in:
+
+```text
+database/session.py
+```
 
 ### Validators
 
@@ -105,7 +120,7 @@ The model is intentionally unchanged in Phase 1.
 
 ## Database Architecture
 
-SQLite remains the active database.
+SQLite remains the default development database. PostgreSQL is supported through `DATABASE_URL`.
 
 Database file:
 
@@ -119,7 +134,39 @@ Tables:
 - `diagnoses`
 - `activities`
 
-Configuration now supports an environment-controlled database path.
+Tables:
+
+- `users`
+- `diagnoses`
+- `activities`
+
+Important indexes:
+
+- `users.email`
+- `users.role`
+- `diagnoses.user_id`
+- `diagnoses.disease`
+- `diagnoses.created_at`
+- `activities.user_id`
+- `activities.event_type`
+- `activities.created_at`
+
+Alembic migrations live in:
+
+```text
+migrations/
+```
+
+The initial schema migration is:
+
+```text
+migrations/versions/20260627_0001_initial_schema.py
+```
+
+Configuration supports:
+
+- `DATABASE_PATH` for SQLite
+- `DATABASE_URL` for PostgreSQL or another SQLAlchemy-compatible database
 
 ## Authentication Flow
 

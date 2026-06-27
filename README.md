@@ -25,6 +25,9 @@ The project is for academic prototype use and is not a replacement for professio
 - Scikit-learn
 - Joblib
 - SQLite
+- SQLAlchemy
+- Alembic
+- PostgreSQL support
 - HTML
 - CSS
 - JavaScript
@@ -65,11 +68,35 @@ Important settings:
 FLASK_CONFIG=development
 SECRET_KEY=replace-with-a-secure-random-value
 DATABASE_PATH=data/medscope.db
+DATABASE_URL=
+SQLALCHEMY_ECHO=false
 LOG_LEVEL=INFO
 LOG_FILE=logs/app.log
 ```
 
-For production, set `FLASK_CONFIG=production` and provide a secure `SECRET_KEY`.
+For production, set `FLASK_CONFIG=production`, provide a secure `SECRET_KEY`, and set `DATABASE_URL` when using PostgreSQL.
+
+PostgreSQL example:
+
+```text
+DATABASE_URL=postgresql+psycopg2://user:password@host:5432/database_name
+```
+
+## Database
+
+SQLite remains the default development database. SQLAlchemy is now used for models, sessions, and repository queries.
+
+Create or update schema with Alembic:
+
+```bash
+alembic upgrade head
+```
+
+Seed the default admin account:
+
+```bash
+python scripts/seed_database.py
+```
 
 ## Default Admin
 
@@ -134,7 +161,9 @@ medical-diagnosis-assistant/
   requirements.txt
   data/
   docs/
+  database/
   errors/
+  migrations/
   model/
   repositories/
   routes/
@@ -156,6 +185,17 @@ The app now includes:
 - rotating application logs
 - deployment-safe `.env.example`
 - Git ignore rules for local runtime files
+
+## Phase 3 Database Work
+
+The app now includes:
+
+- SQLAlchemy models for users, diagnoses, and activities
+- SQLAlchemy repository queries
+- Alembic migration setup
+- indexed database columns for common queries
+- PostgreSQL-ready `DATABASE_URL` support
+- explicit seed command for the default admin user
 
 More details are available in:
 

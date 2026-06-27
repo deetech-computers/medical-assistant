@@ -1,52 +1,58 @@
-from services.database_service import get_connection
+from sqlalchemy import func, select
+
+from database.models import Diagnosis, User
+from database.session import database_session
 
 
 def find_by_email(email):
-    with get_connection() as connection:
-        return connection.execute(
-            "SELECT * FROM users WHERE email = ?",
-            (email,),
-        ).fetchone()
+    with database_session() as session:
+        user = session.scalar(select(User).where(User.email == email))
+        return user.to_dict(include_password=True) if user else None
 
 
 def find_by_id(user_id):
-    with get_connection() as connection:
-        return connection.execute(
-            "SELECT id, name, email, role, created_at FROM users WHERE id = ?",
-            (user_id,),
-        ).fetchone()
+    with database_session() as session:
+        user = session.get(User, user_id)
+        return user.to_dict() if user else None
 
 
 def email_exists(email):
-    with get_connection() as connection:
-        return connection.execute(
-            "SELECT id FROM users WHERE email = ?",
-            (email,),
-        ).fetchone()
+    with database_session() as session:
+        return session.scalar(select(User.id).where(User.email == email)) is not None
 
 
 def create(name, email, password_hash):
-    with get_connection() as connection:
-        cursor = connection.execute(
-            """
-            INSERT INTO users (name, email, password_hash)
-            VALUES (?, ?, ?)
-            """,
-            (name, email, password_hash),
-        )
-
-        return cursor.lastrowid
+    with database_session() as session:
+        user = User(name=name, email=email, password_hash=password_hash)
+        session.add(user)
+        session.flush()
+        return user.id
 
 
 def list_all_with_diagnosis_count():
-    with get_connection() as connection:
-        return connection.execute(
-            """
-            SELECT users.id, users.name, users.email, users.role, users.created_at,
-                   COUNT(diagnoses.id) AS diagnosis_count
-            FROM users
-            LEFT JOIN diagnoses ON diagnoses.user_id = users.id
-            GROUP BY users.id
-            ORDER BY users.created_at DESC
-            """
-        ).fetchall()
+    with database_session() as session:
+        rows = session.execute(
+            select(
+                User.id,
+                User.name,
+                User.email,
+                User.role,
+                User.created_at,
+                func.count(Diagnosis.id).label("diagnosis_count"),
+            )
+            .outerjoin(Diagnosis, Diagnosis.user_id == User.id)
+            .group_by(User.id, User.name, User.email, User.role, User.created_at)
+            .order_by(User.created_at.desc())
+        ).all()
+
+        return [
+            {
+                "id": row.id,
+                "name": row.name,
+                "email": row.email,
+                "role": row.role,
+                "created_at": str(row.created_at),
+                "diagnosis_count": row.diagnosis_count,
+            }
+            for row in rows
+        ]
