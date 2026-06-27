@@ -1,0 +1,46 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{opacity:0}html.app-ready body{opacity:1}.material-symbols-outlined{visibility:hidden}html.app-icons-ready .material-symbols-outlined{visibility:visible}.material-symbols-outlined::before{content:attr(data-icon)}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link id="app-stylesheet" rel="stylesheet" href="{{ url_for('static', filename='css/stitch.css') }}?v=2026061701">
+<script>
+(function () {
+    function showPage() {
+        document.documentElement.classList.add("app-ready");
+    }
+
+    function showIcons() {
+        document.documentElement.classList.add("app-icons-ready");
+        showPage();
+    }
+
+    function stylesheetReady() {
+        var link = document.getElementById("app-stylesheet");
+
+        if (!link || link.sheet) {
+            return Promise.resolve();
+        }
+
+        return new Promise(function (resolve) {
+            link.addEventListener("load", resolve, { once: true });
+            link.addEventListener("error", resolve, { once: true });
+        });
+    }
+
+    var fontsReady = document.fonts && document.fonts.load
+        ? Promise.all([
+            document.fonts.load("400 24px Inter"),
+            document.fonts.load("400 24px Material Symbols Outlined")
+        ])
+        : Promise.resolve();
+
+    Promise.all([stylesheetReady(), fontsReady]).then(showIcons).catch(showPage);
+    window.addEventListener("load", showPage, { once: true });
+    window.setTimeout(showIcons, 2500);
+}());
+</script>
+<noscript><style>body{opacity:1}.material-symbols-outlined{visibility:visible}</style></noscript>
+<script src="{{ url_for('static', filename='js/search.js') }}" defer></script>

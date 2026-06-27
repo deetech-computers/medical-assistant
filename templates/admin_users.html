@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    {% include "_stitch_head.html" %}
+    <title>Users | Project Activity</title>
+</head>
+<body class="font-body-md text-on-surface">
+    {% set active_page = 'admin' %}
+    {% include "_stitch_sidebar.html" %}
+
+    <main class="ml-[260px] min-h-screen flex flex-col">
+        <header class="app-topbar flex justify-between items-center w-full h-16 px-xl bg-surface border-b border-outline-variant shadow-sm">
+            <span class="font-headline-md text-headline-md font-bold text-primary">User Accounts</span>
+            <a class="text-on-surface-variant hover:text-primary" href="{{ url_for('admin_routes.dashboard') }}">Dashboard</a>
+        </header>
+
+        <div class="p-xl">
+            <section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow overflow-x-auto">
+                <table class="w-full min-w-[760px] border-collapse">
+                    <thead>
+                        <tr class="text-left text-label-md font-label-md text-on-surface-variant uppercase">
+                            <th class="py-sm border-b border-outline-variant">Name</th>
+                            <th class="py-sm border-b border-outline-variant">Email</th>
+                            <th class="py-sm border-b border-outline-variant">Role</th>
+                            <th class="py-sm border-b border-outline-variant">Records</th>
+                            <th class="py-sm border-b border-outline-variant">Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr data-search-item>
+                                <td class="py-sm border-b border-surface-container font-semibold">{{ user.name }}</td>
+                                <td class="py-sm border-b border-surface-container text-on-surface-variant">{{ user.email }}</td>
+                                <td class="py-sm border-b border-surface-container text-primary">{{ user.role }}</td>
+                                <td class="py-sm border-b border-surface-container">{{ user.diagnosis_count }}</td>
+                                <td class="py-sm border-b border-surface-container text-on-surface-variant">{{ user.created_at }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

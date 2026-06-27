@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    {% include "_stitch_head.html" %}
+    <title>About | Disease Prediction</title>
+</head>
+<body class="font-body-md text-on-surface">
+    {% set active_page = 'about' %}
+    {% include "_stitch_sidebar.html" %}
+
+    <main class="ml-[260px] min-h-screen flex flex-col">
+        <header class="app-topbar flex justify-between items-center w-full h-16 px-xl bg-surface border-b border-outline-variant shadow-sm">
+            <span class="font-headline-md text-headline-md font-bold text-primary">About the Project</span>
+        </header>
+
+        <div class="p-xl max-w-5xl space-y-xl">
+            <section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-xl tonal-card-shadow">
+                <p class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs">Project summary</p>
+                <h1 class="font-display-lg text-display-lg text-primary mb-md">Disease Prediction Using Machine Learning</h1>
+                <p class="text-body-lg text-on-surface-variant max-w-3xl">
+                    MedScope is a Flask application that predicts a possible disease from selected symptoms using a Decision Tree Classifier trained on a small CSV dataset.
+                </p>
+            </section>
+
+            <section class="grid grid-cols-12 gap-md">
+                <div class="col-span-12 md:col-span-6 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow" data-search-item>
+                    <span class="material-symbols-outlined text-primary text-[32px]" data-icon="dns" aria-hidden="true"></span>
+                    <h2 class="font-headline-sm text-headline-sm mt-md">Python and Flask</h2>
+                    <p class="text-on-surface-variant">Routes, sessions, account access, diagnosis records, and admin monitoring.</p>
+                </div>
+                <div class="col-span-12 md:col-span-6 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow" data-search-item>
+                    <span class="material-symbols-outlined text-primary text-[32px]" data-icon="account_tree" aria-hidden="true"></span>
+                    <h2 class="font-headline-sm text-headline-sm mt-md">Decision Tree Classifier</h2>
+                    <p class="text-on-surface-variant">Scikit-learn model trained from the symptom and disease CSV dataset.</p>
+                </div>
+                <div class="col-span-12 md:col-span-6 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow" data-search-item>
+                    <span class="material-symbols-outlined text-primary text-[32px]" data-icon="table" aria-hidden="true"></span>
+                    <h2 class="font-headline-sm text-headline-sm mt-md">Pandas CSV Workflow</h2>
+                    <p class="text-on-surface-variant">The dataset is loaded, prepared, and converted into model features.</p>
+                </div>
+                <div class="col-span-12 md:col-span-6 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow" data-search-item>
+                    <span class="material-symbols-outlined text-primary text-[32px]" data-icon="web" aria-hidden="true"></span>
+                    <h2 class="font-headline-sm text-headline-sm mt-md">Clinical Portal Interface</h2>
+                    <p class="text-on-surface-variant">The interface follows the Pathogenix clinical dashboard design direction from Stitch.</p>
+                </div>
+            </section>
+
+            <section class="bg-error-container/20 border border-error/10 p-lg rounded-xl flex items-center gap-lg">
+                <span class="material-symbols-outlined text-error text-[32px]" data-icon="warning" aria-hidden="true"></span>
+                <p class="text-body-md text-on-error-container">The project is for academic use and should not be used as medical advice.</p>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

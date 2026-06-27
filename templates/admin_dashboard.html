@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    {% include "_stitch_head.html" %}
+    <title>Dashboard | Project Activity</title>
+</head>
+<body class="font-body-md text-on-surface">
+    {% set active_page = 'admin' %}
+    {% include "_stitch_sidebar.html" %}
+
+    <main class="ml-[260px] min-h-screen flex flex-col">
+        <header class="app-topbar flex justify-between items-center w-full h-16 px-xl bg-surface border-b border-outline-variant shadow-sm">
+            <div class="flex items-center gap-md">
+                <span class="font-headline-md text-headline-md font-bold text-primary">Project Activity</span>
+                <div class="h-6 w-[1px] bg-outline-variant mx-md"></div>
+                <a class="text-on-surface-variant hover:text-primary" href="{{ url_for('admin_routes.users') }}">Users</a>
+            </div>
+            <span class="material-symbols-outlined text-on-surface-variant" data-icon="settings" aria-hidden="true"></span>
+        </header>
+
+        <div class="p-xl space-y-xl">
+            <section class="grid grid-cols-12 gap-md">
+                <div class="col-span-12 md:col-span-3 bg-surface-container-lowest border border-outline-variant p-lg rounded-xl tonal-card-shadow">
+                    <p class="font-label-md text-label-md text-on-surface-variant uppercase">Users</p>
+                    <h2 class="font-display-lg text-display-lg text-primary">{{ summary.user_count }}</h2>
+                </div>
+                <div class="col-span-12 md:col-span-3 bg-surface-container-lowest border border-outline-variant p-lg rounded-xl tonal-card-shadow">
+                    <p class="font-label-md text-label-md text-on-surface-variant uppercase">Diagnoses</p>
+                    <h2 class="font-display-lg text-display-lg text-primary">{{ summary.diagnosis_count }}</h2>
+                </div>
+                <div class="col-span-12 md:col-span-3 bg-surface-container-lowest border border-outline-variant p-lg rounded-xl tonal-card-shadow">
+                    <p class="font-label-md text-label-md text-on-surface-variant uppercase">Guest Diagnoses</p>
+                    <h2 class="font-display-lg text-display-lg text-primary">{{ summary.guest_diagnosis_count }}</h2>
+                </div>
+                <div class="col-span-12 md:col-span-3 bg-surface-container-lowest border border-outline-variant p-lg rounded-xl tonal-card-shadow">
+                    <p class="font-label-md text-label-md text-on-surface-variant uppercase">Activities</p>
+                    <h2 class="font-display-lg text-display-lg text-primary">{{ summary.activity_count }}</h2>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-12 gap-md">
+                <article class="col-span-12 lg:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
+                    <div class="flex items-center justify-between mb-lg">
+                        <h2 class="font-headline-md text-headline-md text-primary">Recent diagnoses</h2>
+                        <span class="material-symbols-outlined text-outline" data-icon="analytics" aria-hidden="true"></span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-[720px] border-collapse">
+                            <thead>
+                                <tr class="text-left text-label-md font-label-md text-on-surface-variant uppercase">
+                                    <th class="py-sm border-b border-outline-variant">User</th>
+                                    <th class="py-sm border-b border-outline-variant">Disease</th>
+                                    <th class="py-sm border-b border-outline-variant">Match</th>
+                                    <th class="py-sm border-b border-outline-variant">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for diagnosis in diagnoses %}
+                                    <tr class="text-body-md" data-search-item>
+                                        <td class="py-sm border-b border-surface-container">{{ diagnosis.name or 'Guest' }}</td>
+                                        <td class="py-sm border-b border-surface-container font-semibold text-primary">{{ diagnosis.disease }}</td>
+                                        <td class="py-sm border-b border-surface-container">{{ diagnosis.confidence or 0 }}%</td>
+                                        <td class="py-sm border-b border-surface-container text-on-surface-variant">{{ diagnosis.created_at }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="col-span-12 lg:col-span-5 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
+                    <div class="flex items-center justify-between mb-lg">
+                        <h2 class="font-headline-md text-headline-md text-primary">Recent activity</h2>
+                        <span class="material-symbols-outlined text-outline" data-icon="monitoring" aria-hidden="true"></span>
+                    </div>
+                    <div class="space-y-sm max-h-[600px] overflow-y-auto custom-scrollbar">
+                        {% for activity in activities %}
+                            <div class="p-md rounded-lg bg-surface-container-low border border-outline-variant" data-search-item>
+                                <p class="font-label-md text-label-md text-on-surface-variant uppercase">{{ activity.created_at }}</p>
+                                <p class="font-semibold text-primary">{{ activity.event_type }}</p>
+                                <p class="text-body-md text-on-surface-variant">{{ activity.name or 'Guest' }} · {{ activity.path or 'System' }}</p>
+                                {% if activity.details %}
+                                    <p class="text-body-md text-on-surface-variant">{{ activity.details }}</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </article>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

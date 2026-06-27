@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    {% include "_stitch_head.html" %}
+    <title>Create Account | Clinician Portal</title>
+</head>
+<body class="font-body-md text-on-surface">
+    {% set active_page = 'login' %}
+    {% include "_stitch_sidebar.html" %}
+
+    <main class="ml-[260px] min-h-screen flex items-center justify-center p-xl">
+        <section class="w-full max-w-xl bg-surface-container-lowest border border-outline-variant rounded-xl p-xl tonal-card-shadow">
+            <p class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs">New account</p>
+            <h1 class="font-display-lg text-display-lg text-primary mb-md">Create account</h1>
+            <p class="text-body-lg text-on-surface-variant mb-lg">Registered users can keep diagnosis records and review their previous results.</p>
+
+            {% if error %}
+                <p class="mb-md p-md bg-error-container text-on-error-container rounded-lg border border-error/20">{{ error }}</p>
+            {% endif %}
+
+            <form class="space-y-md" method="POST">
+                <div>
+                    <label class="font-label-md text-label-md text-on-surface-variant uppercase" for="name">Full name</label>
+                    <input class="mt-xs w-full p-md border border-outline rounded-lg focus:ring-2 focus:ring-primary" id="name" name="name" type="text" required>
+                </div>
+                <div>
+                    <label class="font-label-md text-label-md text-on-surface-variant uppercase" for="email">Email address</label>
+                    <input class="mt-xs w-full p-md border border-outline rounded-lg focus:ring-2 focus:ring-primary" id="email" name="email" type="email" required>
+                </div>
+                <div>
+                    <label class="font-label-md text-label-md text-on-surface-variant uppercase" for="password">Password</label>
+                    <input class="mt-xs w-full p-md border border-outline rounded-lg focus:ring-2 focus:ring-primary" id="password" name="password" type="password" required>
+                </div>
+                <div class="flex flex-wrap gap-md pt-md">
+                    <button class="bg-primary text-on-primary py-md px-xl rounded-lg font-bold" type="submit">Create account</button>
+                    <a class="bg-secondary-container text-primary py-md px-xl rounded-lg font-bold" href="{{ url_for('auth_routes.login') }}">Login</a>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    {% include "_stitch_head.html" %}
+    <title>Page Not Found | Clinician Portal</title>
+</head>
+<body class="font-body-md text-on-surface">
+    {% set active_page = 'home' %}
+    {% include "_stitch_sidebar.html" %}
+
+    <main class="ml-[260px] min-h-screen flex items-center justify-center p-xl">
+        <section class="w-full max-w-xl bg-surface-container-lowest border border-outline-variant rounded-xl p-xl tonal-card-shadow text-center">
+            <p class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs">404</p>
+            <h1 class="font-display-lg text-display-lg text-primary mb-md">Page not found</h1>
+            <p class="text-body-lg text-on-surface-variant mb-lg">The page you requested could not be found.</p>
+            <a class="bg-primary text-on-primary py-md px-xl rounded-lg font-bold inline-block" href="{{ url_for('main_routes.index') }}">Return home</a>
+        </section>
+    </main>
+</body>
+</html>

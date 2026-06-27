@@ -1,0 +1,66 @@
+<button class="mobile-menu-button" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle>
+    <span class="material-symbols-outlined" data-icon="menu" aria-hidden="true"></span>
+</button>
+<div class="mobile-menu-backdrop" data-menu-backdrop></div>
+<aside class="fixed left-0 top-0 h-full w-[260px] bg-surface-container-low border-r border-outline-variant flex flex-col py-lg px-md z-40 app-sidebar" data-sidebar>
+    <div class="mb-xl px-sm">
+        <h1 class="font-headline-sm text-headline-sm font-bold text-primary">Clinician Portal</h1>
+        <p class="font-label-md text-label-md text-on-surface-variant">General Hospital</p>
+    </div>
+    <nav class="flex-1 space-y-base">
+        <a data-nav-link class="flex items-center gap-md {% if active_page == 'home' %}bg-secondary-container text-primary font-semibold border-l-4 border-primary rounded-r-lg{% else %}text-on-surface-variant hover:bg-surface-container-high rounded-lg{% endif %} p-sm transition-all duration-200" href="{{ url_for('main_routes.index') }}">
+            <span class="material-symbols-outlined" data-icon="home" aria-hidden="true"></span>
+            <span class="font-body-md text-body-md">Home</span>
+        </a>
+        <a data-nav-link class="flex items-center gap-md {% if active_page == 'diagnosis' %}bg-secondary-container text-primary font-semibold border-l-4 border-primary rounded-r-lg{% else %}text-on-surface-variant hover:bg-surface-container-high rounded-lg{% endif %} p-sm transition-all duration-200" href="{{ url_for('main_routes.diagnosis') }}">
+            <span class="material-symbols-outlined" data-icon="medical_services" aria-hidden="true"></span>
+            <span class="font-body-md text-body-md">Diagnosis</span>
+        </a>
+        <a data-nav-link class="flex items-center gap-md {% if active_page == 'results' %}bg-secondary-container text-primary font-semibold border-l-4 border-primary rounded-r-lg{% else %}text-on-surface-variant hover:bg-surface-container-high rounded-lg{% endif %} p-sm transition-all duration-200" href="{{ url_for('main_routes.results') }}">
+            <span class="material-symbols-outlined" data-icon="analytics" aria-hidden="true"></span>
+            <span class="font-body-md text-body-md">Results</span>
+        </a>
+        {% if current_user %}
+            <a data-nav-link class="flex items-center gap-md {% if active_page == 'history' %}bg-secondary-container text-primary font-semibold border-l-4 border-primary rounded-r-lg{% else %}text-on-surface-variant hover:bg-surface-container-high rounded-lg{% endif %} p-sm transition-all duration-200" href="{{ url_for('main_routes.history') }}">
+                <span class="material-symbols-outlined" data-icon="history" aria-hidden="true"></span>
+                <span class="font-body-md text-body-md">Records</span>
+            </a>
+            {% if current_user.role == 'admin' %}
+                <a data-nav-link class="flex items-center gap-md {% if active_page == 'admin' %}bg-secondary-container text-primary font-semibold border-l-4 border-primary rounded-r-lg{% else %}text-on-surface-variant hover:bg-surface-container-high rounded-lg{% endif %} p-sm transition-all duration-200" href="{{ url_for('admin_routes.dashboard') }}">
+                    <span class="material-symbols-outlined" data-icon="dashboard" aria-hidden="true"></span>
+                    <span class="font-body-md text-body-md">Dashboard</span>
+                </a>
+            {% endif %}
+        {% else %}
+            <a data-nav-link class="flex items-center gap-md {% if active_page == 'login' %}bg-secondary-container text-primary font-semibold border-l-4 border-primary rounded-r-lg{% else %}text-on-surface-variant hover:bg-surface-container-high rounded-lg{% endif %} p-sm transition-all duration-200" href="{{ url_for('auth_routes.login') }}">
+                <span class="material-symbols-outlined" data-icon="login" aria-hidden="true"></span>
+                <span class="font-body-md text-body-md">Login</span>
+            </a>
+        {% endif %}
+        <a data-nav-link class="flex items-center gap-md {% if active_page == 'about' %}bg-secondary-container text-primary font-semibold border-l-4 border-primary rounded-r-lg{% else %}text-on-surface-variant hover:bg-surface-container-high rounded-lg{% endif %} p-sm transition-all duration-200" href="{{ url_for('main_routes.about') }}">
+            <span class="material-symbols-outlined" data-icon="info" aria-hidden="true"></span>
+            <span class="font-body-md text-body-md">About</span>
+        </a>
+    </nav>
+    <div class="mt-auto pt-lg border-t border-outline-variant">
+        <a data-nav-link class="w-full bg-primary-container text-on-primary py-sm rounded-lg font-semibold hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-xs" href="{{ url_for('main_routes.diagnosis') }}">
+            <span class="material-symbols-outlined" data-icon="add_circle" aria-hidden="true"></span>
+            <span>New Diagnosis</span>
+        </a>
+        <div class="mt-lg flex items-center gap-md px-xs">
+            <div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center overflow-hidden">
+                <span class="material-symbols-outlined text-primary" data-icon="person" aria-hidden="true"></span>
+            </div>
+            <div>
+                {% if current_user %}
+                    <p class="font-label-md text-label-md font-bold">{{ current_user.name }}</p>
+                    <a class="text-[10px] text-on-surface-variant" href="{{ url_for('auth_routes.logout') }}">Logout</a>
+                {% else %}
+                    <p class="font-label-md text-label-md font-bold">Guest User</p>
+                    <a class="text-[10px] text-on-surface-variant" href="{{ url_for('auth_routes.login') }}">Login for records</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</aside>
+<script src="{{ url_for('static', filename='js/navigation.js') }}"></script>

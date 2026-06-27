@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    {% include "_stitch_head.html" %}
+    <title>Prediction Results | Clinician Portal</title>
+</head>
+<body class="font-body-md text-on-surface">
+    {% set active_page = 'results' %}
+    {% include "_stitch_sidebar.html" %}
+
+    <main class="ml-[260px] min-h-screen flex flex-col">
+        <header class="app-topbar flex justify-between items-center w-full h-16 px-xl bg-surface border-b border-outline-variant shadow-sm">
+            <div class="flex items-center gap-md">
+                <span class="font-headline-md text-headline-md font-bold text-primary">Disease Prediction</span>
+                <div class="h-6 w-[1px] bg-outline-variant mx-md"></div>
+                <nav class="hidden md:flex gap-lg">
+                    <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="{{ url_for('main_routes.diagnosis') }}">Patients</a>
+                    {% if current_user %}
+                        <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="{{ url_for('main_routes.history') }}">History</a>
+                    {% endif %}
+                    <a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="{{ url_for('main_routes.about') }}">Reports</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-lg">
+                <span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications" aria-hidden="true"></span>
+                <span class="material-symbols-outlined text-on-surface-variant" data-icon="settings" aria-hidden="true"></span>
+            </div>
+        </header>
+
+        <div class="flex-1 p-xl" data-confidence="{{ result.confidence or 0 }}">
+            <div class="max-w-5xl mx-auto space-y-xl">
+                <div class="relative flex justify-between items-center px-xl">
+                    <div class="absolute top-1/2 left-0 right-0 h-[2px] bg-primary -translate-y-1/2"></div>
+                    <div class="relative z-10 flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary border-4 border-surface shadow-sm">
+                            <span class="material-symbols-outlined text-[20px]" data-icon="check" aria-hidden="true"></span>
+                        </div>
+                        <span class="mt-xs font-label-md text-label-md text-primary">Demographics</span>
+                    </div>
+                    <div class="relative z-10 flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary border-4 border-surface shadow-sm">
+                            <span class="material-symbols-outlined text-[20px]" data-icon="check" aria-hidden="true"></span>
+                        </div>
+                        <span class="mt-xs font-label-md text-label-md text-primary">Symptom Input</span>
+                    </div>
+                    <div class="relative z-10 flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary border-4 border-surface shadow-md">
+                            <span class="material-symbols-outlined text-[20px]" data-icon="analytics" aria-hidden="true"></span>
+                        </div>
+                        <span class="mt-xs font-label-md text-label-md text-primary font-bold">View Results</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-12 gap-md">
+                    <div class="col-span-12 lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
+                        <div class="flex justify-between items-start mb-xl">
+                            <div>
+                                <p class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider mb-xs">Diagnostic Assessment</p>
+                                <h2 class="font-headline-md text-headline-md text-primary">Possible Condition: {{ result.disease }}</h2>
+                            </div>
+                            <div class="bg-secondary-container px-md py-sm rounded-lg text-center">
+                                <p class="text-label-sm font-label-sm text-secondary uppercase">Confidence</p>
+                                <p class="font-headline-md text-headline-md text-primary-container" data-confidence-label>{{ result.confidence or 0 }}%</p>
+                            </div>
+                        </div>
+                        <div class="w-full h-3 bg-surface-container rounded-full overflow-hidden mb-xl">
+                            <div class="h-full bg-primary-container rounded-full" data-confidence-fill></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
+                            <div>
+                                <h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-md">Selected Symptoms</h3>
+                                <div class="flex flex-wrap gap-xs">
+                                    {% for symptom in result.selected_symptoms %}
+                                        <span class="bg-primary/5 text-primary-container font-body-md px-md py-xs rounded-full border border-primary/10">{{ symptom_label(symptom) }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-md">Key Findings</h3>
+                                <ul class="space-y-sm">
+                                    <li class="flex items-start gap-sm">
+                                        <span class="material-symbols-outlined text-primary text-[18px]" data-icon="info" aria-hidden="true"></span>
+                                        <span class="text-body-md text-on-surface-variant" data-confidence-note></span>
+                                    </li>
+                                    <li class="flex items-start gap-sm">
+                                        <span class="material-symbols-outlined text-primary text-[18px]" data-icon="info" aria-hidden="true"></span>
+                                        <span class="text-body-md text-on-surface-variant">This result is based on symptom patterns in the project dataset.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-xl pt-lg border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-md">
+                            <div class="flex items-center gap-sm bg-error-container/20 p-md rounded-xl border border-error-container/40">
+                                <span class="material-symbols-outlined text-error" data-icon="warning" aria-hidden="true"></span>
+                                <p class="text-body-md text-on-error-container leading-tight">
+                                    <strong>Recommendation note:</strong> This prediction is not a clinical diagnosis.
+                                </p>
+                            </div>
+                            <a class="whitespace-nowrap bg-primary text-on-primary py-lg px-xl rounded-xl font-bold transition-all hover:shadow-lg active:scale-95 text-lg" href="{{ url_for('main_routes.diagnosis') }}">Start New Assessment</a>
+                        </div>
+                    </div>
+
+                    <div class="col-span-12 lg:col-span-4 space-y-md">
+                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md tonal-card-shadow">
+                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-md">Patient Context</h3>
+                            <div class="space-y-sm">
+                                <div class="flex justify-between items-center py-xs border-b border-surface-container">
+                                    <span class="text-on-surface-variant text-body-md">Account mode</span>
+                                    <span class="font-semibold text-primary">{{ 'Saved' if current_user else 'Guest' }}</span>
+                                </div>
+                                <div class="flex justify-between items-center py-xs border-b border-surface-container">
+                                    <span class="text-on-surface-variant text-body-md">Record status</span>
+                                    <span class="px-sm py-[2px] bg-secondary-fixed text-on-secondary-fixed rounded-full text-label-sm font-bold">{{ 'STORED' if current_user else 'TEMPORARY' }}</span>
+                                </div>
+                                <div class="flex justify-between items-center py-xs">
+                                    <span class="text-on-surface-variant text-body-md">Model</span>
+                                    <span class="font-semibold text-primary">Decision Tree</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md tonal-card-shadow overflow-hidden relative">
+                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-md">Statistical Probability</h3>
+                            <div class="space-y-lg">
+                                <div class="space-y-xs">
+                                    <div class="flex justify-between text-label-sm font-bold">
+                                        <span>{{ result.disease }}</span>
+                                        <span>{{ result.confidence or 0 }}%</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-surface-container rounded-full">
+                                        <div class="h-full bg-primary-container rounded-full" data-confidence-fill></div>
+                                    </div>
+                                </div>
+                                <div class="space-y-xs">
+                                    <div class="flex justify-between text-label-sm font-bold text-on-surface-variant">
+                                        <span>Other dataset classes</span>
+                                        <span>{{ 100 - (result.confidence or 0) }}%</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-surface-container rounded-full">
+                                        <div class="h-full bg-outline rounded-full" style="width: 20%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-sm">
+                            <button class="flex flex-col items-center justify-center gap-xs p-md bg-white border border-outline-variant rounded-xl hover:bg-surface transition-colors" type="button">
+                                <span class="material-symbols-outlined text-primary" data-icon="print" aria-hidden="true"></span>
+                                <span class="text-label-md">Print PDF</span>
+                            </button>
+                            {% if current_user %}
+                                <a class="flex flex-col items-center justify-center gap-xs p-md bg-white border border-outline-variant rounded-xl hover:bg-surface transition-colors" href="{{ url_for('main_routes.history') }}">
+                                    <span class="material-symbols-outlined text-primary" data-icon="folder" aria-hidden="true"></span>
+                                    <span class="text-label-md">Records</span>
+                                </a>
+                            {% else %}
+                                <a class="flex flex-col items-center justify-center gap-xs p-md bg-white border border-outline-variant rounded-xl hover:bg-surface transition-colors" href="{{ url_for('auth_routes.login') }}">
+                                    <span class="material-symbols-outlined text-primary" data-icon="login" aria-hidden="true"></span>
+                                    <span class="text-label-md">Login</span>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
+</body>
+</html>

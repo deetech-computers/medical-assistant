@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    {% include "_stitch_head.html" %}
+    <title>Records | Clinician Portal</title>
+</head>
+<body class="font-body-md text-on-surface">
+    {% set active_page = 'history' %}
+    {% include "_stitch_sidebar.html" %}
+
+    <main class="ml-[260px] min-h-screen flex flex-col">
+        <header class="app-topbar records-topbar flex justify-between items-center w-full h-16 px-xl bg-surface border-b border-outline-variant shadow-sm">
+            <div class="flex items-center gap-md">
+                <span class="font-headline-md text-headline-md font-bold text-primary">Diagnosis Records</span>
+                <a class="bg-primary text-on-primary py-sm px-md rounded-lg font-semibold" href="{{ url_for('main_routes.diagnosis') }}">New Diagnosis</a>
+            </div>
+        </header>
+
+        <div class="p-xl grid grid-cols-12 gap-md">
+            {% for diagnosis in diagnoses %}
+                <article class="col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow" data-search-item>
+                    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-md mb-md">
+                        <div>
+                            <p class="font-label-md text-label-md text-on-surface-variant uppercase">{{ diagnosis.created_at }}</p>
+                            <h2 class="font-headline-md text-headline-md text-primary">{{ diagnosis.disease }}</h2>
+                        </div>
+                        <div class="bg-secondary-container px-md py-sm rounded-lg text-center">
+                            <p class="text-label-sm font-label-sm text-secondary uppercase">Match</p>
+                            <p class="font-headline-md text-headline-md text-primary-container">{{ diagnosis.confidence or 0 }}%</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-xs">
+                        {% for symptom in diagnosis.symptom_labels %}
+                            <span class="bg-primary/5 text-primary-container font-body-md px-md py-xs rounded-full border border-primary/10">{{ symptom }}</span>
+                        {% endfor %}
+                    </div>
+                </article>
+            {% else %}
+                <article class="col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
+                    <h2 class="font-headline-md text-headline-md text-primary">No records yet</h2>
+                    <p class="text-on-surface-variant">Run a symptom assessment while logged in to save results here.</p>
+                </article>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

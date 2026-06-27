@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    {% include "_stitch_head.html" %}
+    <title>Disease Prediction Assistant</title>
+</head>
+<body class="bg-surface text-on-surface">
+    {% set active_page = 'home' %}
+    {% include "_stitch_sidebar.html" %}
+
+    <main class="ml-[260px] min-h-screen flex flex-col">
+        <header class="app-topbar bg-surface/80 backdrop-blur-md flex justify-between items-center w-full h-16 px-xl border-b border-outline-variant">
+            <div class="flex items-center gap-md">
+                <span class="font-headline-md text-headline-md font-bold text-primary">Disease Prediction</span>
+            </div>
+            <div class="flex items-center gap-lg">
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="{{ url_for('auth_routes.login') }}">
+                    <span class="material-symbols-outlined" data-icon="person" aria-hidden="true"></span>
+                </a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="{{ url_for('main_routes.about') }}">
+                    <span class="material-symbols-outlined" data-icon="settings" aria-hidden="true"></span>
+                </a>
+            </div>
+        </header>
+
+        <div class="home-content p-xl flex-1 max-w-[1400px] mx-auto w-full">
+            <section class="home-hero relative overflow-hidden rounded-3xl bg-primary-container text-on-primary mb-xl p-xl flex flex-col md:flex-row items-center gap-xl min-h-[400px]">
+                <div class="home-hero-copy relative z-10 md:w-3/5">
+                    <span class="inline-block bg-white/10 text-white font-label-md text-label-md px-md py-base rounded-full mb-md uppercase tracking-widest">Final Year Clinical Project</span>
+                    <h1 class="font-display-lg text-display-lg mb-md leading-tight">Disease Prediction Assistant</h1>
+                    <p class="font-body-lg text-body-lg text-white/80 mb-xl max-w-xl">
+                        A clinical decision support project that identifies possible conditions from selected symptoms using a trained Decision Tree Classifier.
+                    </p>
+                    <div class="flex flex-wrap gap-md">
+                        <a class="bg-white text-primary-container font-bold px-xl py-md rounded-xl flex items-center gap-sm transition-all hover:shadow-lg hover:-translate-y-1 active:scale-95" href="{{ url_for('main_routes.diagnosis') }}">
+                            Start Diagnosis
+                            <span class="material-symbols-outlined" data-icon="arrow_forward" aria-hidden="true"></span>
+                        </a>
+                        <a class="bg-transparent border border-white/30 text-white font-bold px-xl py-md rounded-xl transition-all hover:bg-white/10 active:scale-95" href="{{ url_for('main_routes.about') }}">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                <div class="home-status-panel relative z-10 md:w-2/5 flex justify-center">
+                    <div class="home-status-shell w-full h-[300px] rounded-2xl overflow-hidden shadow-2xl border border-white/20 bg-white/10 p-lg">
+                        <div class="bg-white text-on-surface rounded-xl p-lg h-full border border-white/30">
+                            <div class="flex items-center justify-between mb-lg">
+                                <div>
+                                    <p class="font-label-md text-label-md text-on-surface-variant uppercase">Model Status</p>
+                                    <h2 class="font-headline-md text-headline-md text-primary">Ready</h2>
+                                </div>
+                                <span class="material-symbols-outlined text-primary text-[44px]" data-icon="monitor_heart" aria-hidden="true"></span>
+                            </div>
+                            <div class="space-y-md">
+                                <div class="h-3 bg-secondary-container rounded-full"></div>
+                                <div class="h-3 bg-surface-container rounded-full w-4/5"></div>
+                                <div class="h-3 bg-surface-container rounded-full w-2/3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="home-feature-grid grid grid-cols-12 gap-md mb-xl">
+                <div class="home-feature-card col-span-12 md:col-span-6 bg-surface-container-lowest border border-outline-variant p-lg rounded-3xl shadow-sm hover:shadow-md transition-shadow" data-search-item>
+                    <div class="w-14 h-14 bg-secondary-container rounded-2xl flex items-center justify-center text-primary-container mb-xl">
+                        <span class="material-symbols-outlined text-[32px]" data-icon="clinical_notes" aria-hidden="true"></span>
+                    </div>
+                    <h3 class="font-headline-sm text-headline-sm mb-sm">Symptom-based prediction</h3>
+                    <p class="font-body-md text-body-md text-on-surface-variant mb-lg">
+                        The user selects symptoms and the system prepares a feature row for the trained model.
+                    </p>
+                    <div class="flex flex-wrap gap-xs">
+                        <span class="bg-surface-container-high text-on-surface-variant text-[10px] font-bold px-sm py-1 rounded-full uppercase">Symptoms</span>
+                        <span class="bg-surface-container-high text-on-surface-variant text-[10px] font-bold px-sm py-1 rounded-full uppercase">Records</span>
+                    </div>
+                </div>
+                <div class="home-feature-card col-span-12 md:col-span-3 bg-white border border-outline-variant p-lg rounded-3xl shadow-sm hover:shadow-md transition-shadow" data-search-item>
+                    <div class="w-12 h-12 bg-primary/5 rounded-xl flex items-center justify-center text-primary mb-lg">
+                        <span class="material-symbols-outlined" data-icon="account_tree" aria-hidden="true"></span>
+                    </div>
+                    <h3 class="font-headline-sm text-headline-sm mb-sm text-[18px]">Decision Tree Model</h3>
+                    <p class="font-body-md text-body-md text-on-surface-variant">A transparent classifier trained from the project CSV dataset.</p>
+                </div>
+                <div class="home-feature-card col-span-12 md:col-span-3 bg-white border border-outline-variant p-lg rounded-3xl shadow-sm hover:shadow-md transition-shadow" data-search-item>
+                    <div class="w-12 h-12 bg-secondary-container/30 rounded-xl flex items-center justify-center text-secondary mb-lg">
+                        <span class="material-symbols-outlined" data-icon="dashboard" aria-hidden="true"></span>
+                    </div>
+                    <h3 class="font-headline-sm text-headline-sm mb-sm text-[18px]">Admin Monitoring</h3>
+                    <p class="font-body-md text-body-md text-on-surface-variant">Admin users can review accounts, records, and page activity.</p>
+                </div>
+            </section>
+
+            <section class="home-note bg-error-container/20 border border-error/10 p-xl rounded-3xl flex items-center gap-lg">
+                <div class="w-12 h-12 bg-error-container rounded-full flex items-center justify-center text-error shrink-0">
+                    <span class="material-symbols-outlined" data-icon="warning" aria-hidden="true"></span>
+                </div>
+                <p class="font-body-md text-body-md text-on-error-container">
+                    This system is for academic use only and is not a replacement for professional medical advice.
+                </p>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

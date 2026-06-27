@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    {% include "_stitch_head.html" %}
+    <title>Review Symptoms | Clinician Portal</title>
+</head>
+<body class="font-body-md text-on-surface">
+    {% set active_page = 'diagnosis' %}
+    {% include "_stitch_sidebar.html" %}
+
+    <main class="ml-[260px] min-h-screen flex flex-col">
+        <header class="app-topbar flex justify-between items-center w-full h-16 px-xl bg-surface border-b border-outline-variant">
+            <span class="font-headline-md text-headline-md font-bold text-primary">Disease Prediction</span>
+            <a class="text-on-surface-variant hover:text-primary transition-colors" href="{{ url_for('main_routes.diagnosis') }}">
+                <span class="material-symbols-outlined" data-icon="edit" aria-hidden="true"></span>
+            </a>
+        </header>
+
+        <form class="flex-1 p-xl" action="{{ url_for('main_routes.predict') }}" method="POST">
+            <div class="max-w-5xl mx-auto space-y-xl">
+                <div class="relative flex justify-between items-center px-xl">
+                    <div class="absolute top-1/2 left-0 right-0 h-[2px] bg-outline-variant -translate-y-1/2"></div>
+                    <div class="relative z-10 flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary border-4 border-surface shadow-sm">
+                            <span class="material-symbols-outlined text-[20px]" data-icon="check" aria-hidden="true"></span>
+                        </div>
+                        <span class="mt-xs font-label-md text-label-md text-primary">Select Symptoms</span>
+                    </div>
+                    <div class="relative z-10 flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary border-4 border-surface shadow-md">2</div>
+                        <span class="mt-xs font-label-md text-label-md text-primary font-bold">Review</span>
+                    </div>
+                    <div class="relative z-10 flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold border-4 border-surface">3</div>
+                        <span class="mt-xs font-label-md text-label-md text-on-surface-variant">View Results</span>
+                    </div>
+                </div>
+
+                <section class="grid grid-cols-12 gap-md">
+                    <article class="col-span-12 lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
+                        <p class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs">Review case</p>
+                        <h1 class="font-display-lg text-display-lg text-primary mb-md">Confirm selected symptoms</h1>
+                        <p class="text-body-lg text-on-surface-variant mb-xl">
+                            Check the selected symptoms before running the Decision Tree prediction.
+                        </p>
+
+                        <div class="flex flex-wrap gap-xs">
+                            {% for symptom in selected_symptoms %}
+                                <span class="bg-primary/5 text-primary-container font-body-md px-md py-xs rounded-full border border-primary/10">{{ symptom_label(symptom) }}</span>
+                                <input type="hidden" name="symptoms" value="{{ symptom }}">
+                            {% endfor %}
+                        </div>
+                    </article>
+
+                    <aside class="col-span-12 lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow">
+                        <h2 class="font-headline-sm text-headline-sm text-primary mb-md">Next step</h2>
+                        <p class="text-on-surface-variant mb-lg">
+                            The result page will show the closest disease match, confidence-style score, and selected symptom summary.
+                        </p>
+                        <div class="space-y-sm">
+                            <button class="w-full bg-primary text-on-primary py-md px-xl rounded-lg font-bold flex items-center justify-center gap-sm" type="submit">
+                                Predict Condition
+                                <span class="material-symbols-outlined" data-icon="analytics" aria-hidden="true"></span>
+                            </button>
+                            <a class="w-full bg-secondary-container text-primary py-md px-xl rounded-lg font-bold flex items-center justify-center gap-sm" href="{{ url_for('main_routes.diagnosis') }}">
+                                Edit Symptoms
+                            </a>
+                        </div>
+                    </aside>
+                </section>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

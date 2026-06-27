@@ -1,0 +1,175 @@
+.search-box {
+    border-radius: 0.75rem;
+    background: var(--surface-soft);
+    padding: 1rem;
+}
+
+.search-label {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: var(--text-muted);
+    font-weight: 800;
+}
+
+.search-input {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    background: #ffffff;
+    color: var(--text-main);
+    padding: 0.95rem 1rem;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.12);
+}
+
+.selected-tray {
+    min-height: 4.25rem;
+    border: 1px dashed var(--line);
+    border-radius: 0.75rem;
+    margin: 1rem 0;
+    padding: 0.85rem;
+}
+
+.selected-list {
+    min-height: 2.1rem;
+    margin-top: 0.55rem;
+}
+
+.selected-list:empty::before {
+    content: "No symptoms selected yet";
+    color: var(--text-muted);
+}
+
+.symptom-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.symptom-option {
+    display: flex;
+    align-items: center;
+    min-height: 3.45rem;
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    background: #ffffff;
+    cursor: pointer;
+    padding: 0.75rem;
+    transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.symptom-option:hover {
+    border-color: rgba(26, 35, 126, 0.45);
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+}
+
+.symptom-option input {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--primary);
+    margin: 0 0.65rem 0 0;
+}
+
+.symptom-option span {
+    font-weight: 760;
+}
+
+.symptom-option.is-selected {
+    border-color: var(--primary);
+    background: var(--mint);
+}
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.4rem;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    padding: 0.8rem 1.1rem;
+    font-weight: 900;
+}
+
+.primary-button {
+    background: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(26, 35, 126, 0.16);
+}
+
+.primary-button:hover {
+    background: var(--primary-dark);
+}
+
+.secondary-button,
+.quiet-button {
+    border-color: var(--line);
+    background: #ffffff;
+    color: var(--text-main);
+}
+
+.quiet-button {
+    background: rgba(255, 255, 255, 0.64);
+}
+
+.form-alert {
+    border-left: 4px solid var(--warm);
+    border-radius: 0.5rem;
+    background: #fff7ec;
+    color: #764716;
+    padding: 0.85rem 1rem;
+}
+
+.auth-form {
+    display: grid;
+    gap: 0.8rem;
+    margin-top: 1.25rem;
+}
+
+.auth-form label {
+    color: var(--text-muted);
+    font-weight: 800;
+}
+
+.auth-form input {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    background: #ffffff;
+    color: var(--text-main);
+    padding: 0.95rem 1rem;
+    outline: none;
+}
+
+.auth-form input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.12);
+}
+
+@media (max-width: 1120px) {
+    .symptom-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .symptom-list {
+        grid-template-columns: 1fr;
+    }
+
+    .button {
+        width: 100%;
+    }
+}

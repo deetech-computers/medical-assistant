@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    {% include "_stitch_head.html" %}
+    <title>Results | Clinician Portal</title>
+</head>
+<body class="font-body-md text-on-surface">
+    {% set active_page = 'results' %}
+    {% include "_stitch_sidebar.html" %}
+
+    <main class="ml-[260px] min-h-screen flex flex-col">
+        <header class="app-topbar records-topbar flex justify-between items-center w-full h-16 px-xl bg-surface border-b border-outline-variant shadow-sm">
+            <div class="flex items-center gap-md">
+                <span class="font-headline-md text-headline-md font-bold text-primary">Prediction Results</span>
+                <a class="bg-primary text-on-primary py-sm px-md rounded-lg font-semibold" href="{{ url_for('main_routes.diagnosis') }}">Start Diagnosis</a>
+            </div>
+        </header>
+
+        <div class="p-xl max-w-5xl space-y-xl">
+            <section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-xl tonal-card-shadow">
+                <p class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs">No active result</p>
+                <h1 class="font-display-lg text-display-lg text-primary mb-md">Run a symptom check to view results</h1>
+                <p class="text-body-lg text-on-surface-variant max-w-3xl">
+                    The results screen appears after symptoms are selected and submitted. Logged-in users can also review saved records from the Records page.
+                </p>
+                <div class="flex flex-wrap gap-md mt-xl">
+                    <a class="bg-primary text-on-primary py-md px-xl rounded-lg font-bold" href="{{ url_for('main_routes.diagnosis') }}">Start Diagnosis</a>
+                    <a class="bg-secondary-container text-primary py-md px-xl rounded-lg font-bold" href="{{ url_for('auth_routes.login') }}">Login for Records</a>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-12 gap-md">
+                <div class="col-span-12 md:col-span-6 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow" data-search-item>
+                    <span class="material-symbols-outlined text-primary text-[32px]" data-icon="analytics" aria-hidden="true"></span>
+                    <h2 class="font-headline-sm text-headline-sm mt-md">Prediction report</h2>
+                    <p class="text-on-surface-variant">Shows the possible condition, match strength, selected symptoms, and a medical note.</p>
+                </div>
+                <div class="col-span-12 md:col-span-6 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg tonal-card-shadow" data-search-item>
+                    <span class="material-symbols-outlined text-primary text-[32px]" data-icon="folder" aria-hidden="true"></span>
+                    <h2 class="font-headline-sm text-headline-sm mt-md">Saved records</h2>
+                    <p class="text-on-surface-variant">Account users can keep previous checks and review them later.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
