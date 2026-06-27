@@ -247,4 +247,25 @@ Phase 1 prepares the app for deployment by adding:
 - ignored local runtime files
 - `.env.example`
 
-Render, Vercel, Docker, and CI/CD files are planned for later deployment phases.
+Phase 7 added deployment assets for Render, Docker, Procfile-based hosting, and Vercel-style Python routing.
+
+Primary deployment files:
+
+- `render.yaml`
+- `Dockerfile`
+- `Procfile`
+- `runtime.txt`
+- `vercel.json`
+- `.dockerignore`
+
+The production WSGI target is:
+
+```text
+app:app
+```
+
+The deployment health check is:
+
+```text
+/api/v1/health
+```

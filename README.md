@@ -85,6 +85,43 @@ PostgreSQL example:
 DATABASE_URL=postgresql+psycopg2://user:password@host:5432/database_name
 ```
 
+## Deployment
+
+Production files are included:
+
+```text
+render.yaml
+Dockerfile
+Procfile
+runtime.txt
+vercel.json
+```
+
+Production WSGI target:
+
+```text
+app:app
+```
+
+Health check:
+
+```text
+/api/v1/health
+```
+
+Render can use `render.yaml` with a PostgreSQL database. Docker can run the app with:
+
+```bash
+docker build -t medical-diagnosis-assistant .
+docker run -p 5000:5000 --env-file .env medical-diagnosis-assistant
+```
+
+Full deployment notes are in:
+
+```text
+docs/project/DEPLOYMENT_GUIDE.md
+```
+
 ## Database
 
 SQLite remains the default development database. SQLAlchemy is now used for models, sessions, and repository queries.

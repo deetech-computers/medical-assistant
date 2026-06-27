@@ -37,6 +37,9 @@ def create_app():
     return app
 
 
+application = create_app()
+app = application
+
+
 if __name__ == "__main__":
-    application = create_app()
     application.run(debug=application.config["DEBUG"])

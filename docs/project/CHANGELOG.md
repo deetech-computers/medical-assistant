@@ -6,6 +6,13 @@ All notable project changes are documented here.
 
 ### Added
 
+- Added Render deployment configuration.
+- Added Docker deployment configuration.
+- Added Procfile and Python runtime declaration.
+- Added Vercel Python routing configuration.
+- Added deployment documentation for local, Render, Docker, Vercel, GitHub, and environment setup.
+- Added production WSGI app target.
+- Added Phase 7 deployment summary documentation.
 - Added admin analytics service for dashboard reports, chart data, filtered records, pagination, and CSV export.
 - Added Chart.js dashboard charts for daily predictions, disease analytics, weekly reports, and monthly reports.
 - Added admin symptom analytics and report summary cards.
@@ -52,6 +59,7 @@ All notable project changes are documented here.
 
 ### Changed
 
+- Updated requirements with Gunicorn for production WSGI serving.
 - Updated shared visual styling with improved surfaces, focus states, shadows, animation, and responsive behavior.
 - Updated sidebar, topbar, cards, forms, and tables for a more polished healthcare dashboard feel.
 - Updated repositories to use SQLAlchemy instead of direct SQLite queries.
